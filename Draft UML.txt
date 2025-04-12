@@ -1,0 +1,66 @@
+@startuml
+skinparam class {
+    BackgroundColor White
+    BorderColor Black
+    ArrowColor Black
+}
+
+title Fase1
+
+interface JsonValue {
+    + {abstract} toJsonString(): String
+}
+
+class JsonObject {
+    - properties: MutableMap<String, JsonValue>
+    + addProperty(key: String, value: JsonValue)
+    + removeProperty(key: String)
+    + getProperty(key: String): JsonValue?
+    + filter(predicate: (Map.Entry<String, JsonValue>) -> Boolean): JsonObject
+    + toJsonString(): String
+}
+
+class JsonArray {
+    - elements: MutableList<JsonValue>
+    + addElement(element: JsonValue)
+    + removeElement(index: Int)
+    + getElement(index: Int): JsonValue
+    + filter(predicate: (JsonValue) -> Boolean): JsonArray
+    + map(transform: (JsonValue) -> JsonValue): JsonArray
+    + toJsonString(): String
+}
+
+class JsonString {
+    - value: String
+    + toJsonString(): String
+}
+
+class JsonNumber {
+    - value: Number
+    + toJsonString(): String
+}
+
+class JsonBoolean {
+    - value: Boolean
+    + toJsonString(): String
+}
+
+class JsonNull {
+    + toJsonString(): String
+}
+
+
+
+
+
+JsonValue <|-- JsonObject
+JsonValue <|-- JsonArray
+JsonValue <|-- JsonString
+JsonValue <|-- JsonNumber
+JsonValue <|-- JsonBoolean
+JsonValue <|-- JsonNull
+
+
+
+JsonObject "1" *-- "*" JsonValue : contains
+JsonArray "1" *-- "*" JsonValue : contains
