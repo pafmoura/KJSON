@@ -1,13 +1,49 @@
 package iscte.tests.kjson
 
-import iscte.main.kjson.*
+import iscte.main.kjson.model.JsonArray
+import iscte.main.kjson.model.JsonBoolean
+import iscte.main.kjson.model.JsonNull
+import iscte.main.kjson.model.JsonNumber
+import iscte.main.kjson.model.JsonObject
+import iscte.main.kjson.model.JsonString
+import iscte.main.kjson.model.MutableJsonObject
+import iscte.main.kjson.model.VisitorAllSameType
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 
 class JsonArrayTests {
 
+    fun getCadeiraJson(): JsonObject {
+        return JsonObject(
+            mapOf(
+                "nota" to JsonNumber(20),
+                "unidade curricular" to JsonString("PA"),
+                "aprovado" to JsonBoolean(true),
+                "data de entrega" to JsonNull,
+                "professor" to JsonObject(
+                    mapOf(
+                        "nome" to JsonString("André"),
+                        "idade" to JsonNull,
+                        "homem" to JsonBoolean(true),
+                        "gabinete" to JsonString("D6.23")
+                    )
+                )
+            )
+        )
+    }
+
+    fun getCadeiraJson1() : JsonObject{
+        return JsonObject(
+            mutableMapOf(
+                "" to JsonString("PA"),
+                "nota" to JsonString("PA"),
+                "aprovado" to JsonString("PA"),
+            )
+        )
+    }
+
     @Test
-    fun allSameTypeTest() {
+    fun testAllSameType() {
         val jsonArray = JsonArray(
             listOf(
                 JsonString("Hello"),
@@ -15,15 +51,79 @@ class JsonArrayTests {
                 JsonString("!")
             )
         )
-        assertTrue(jsonArray.allSameType())
+        val visitor = VisitorAllSameType()
+        jsonArray.accept(visitor)
+        assertTrue(visitor.isValid())
 
-        val jsonArray2 = JsonArray(
+        assertTrue(jsonArray.isAllSameType())
+
+        val jsonArray1 = JsonArray(
             listOf(
                 JsonString("Hello"),
                 JsonNumber(1),
                 JsonBoolean(false)
             )
         )
-        assertFalse(jsonArray2.allSameType())
+        assertFalse(jsonArray1.isAllSameType())
+
+        val visitor1 = VisitorAllSameType()
+        jsonArray1.accept(visitor1)
+        assertFalse(visitor1.isValid())
+
+        val jsonArray2 = JsonArray(
+            listOf(
+                JsonString("Hello"),
+                getCadeiraJson(),
+                JsonString("World")
+            )
+        )
+
+        assertFalse(jsonArray2.isAllSameType())
+
+        val visitor2 = VisitorAllSameType()
+        jsonArray2.accept(visitor2)
+        assertFalse(visitor2.isValid())
+
+        val jsonArray3 = JsonArray(
+            listOf(
+                getCadeiraJson1(),
+                getCadeiraJson1(),
+                getCadeiraJson1()
+            )
+        )
+
+        assertTrue(jsonArray3.isAllSameType())
+
+        val visitor3 = VisitorAllSameType()
+        jsonArray3.accept(visitor3)
+        assertTrue(visitor3.isValid())
+
+        val jsonArray4 = JsonArray(
+            listOf(
+                getCadeiraJson1(),
+                JsonNull,
+                getCadeiraJson1()
+            )
+        )
+
+        assertFalse(jsonArray4.isAllSameType())
+
+        val visitor4 = VisitorAllSameType()
+        jsonArray4.accept(visitor4)
+        assertFalse(visitor4.isValid())
+
+        val jsonArray5 = JsonArray(
+            listOf(
+                JsonNull,
+                JsonNull,
+                JsonNull
+            )
+        )
+
+        assertFalse(jsonArray5.isAllSameType())
+
+        val visitor5 = VisitorAllSameType()
+        jsonArray5.accept(visitor5)
+        assertFalse(visitor5.isValid())
     }
 }

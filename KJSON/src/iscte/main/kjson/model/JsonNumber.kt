@@ -1,54 +1,15 @@
-package iscte.main.kjson
+package iscte.main.kjson.model
 
-interface JsonValue {
-    val data : Any?
-    fun toJsonString(): String = this.data.toString()
-    fun accept(visitor: (Map.Entry<String, JsonValue>) -> Unit) {}
-}
-
-object JsonNull : JsonValue {
-    override val data: Any? = null
-}
-
-data class JsonString(override val data: String) : JsonValue{
-    override fun toJsonString(): String = "\"$data\""
-
-    override fun equals(other: Any?): Boolean {
-        require(other is JsonString)
-        return this.data == other.data
-    }
-    override fun hashCode(): Int {
-        return this.data.hashCode()
-    }
-    operator fun plus(other: JsonString): JsonString {
-        return JsonString(this.data + other.data)
-    }
-
-    operator fun plus(other: JsonNumber): JsonString {
-        return JsonString(this.data + other.data.toString())
-    }
-
-    operator fun plus(other: JsonBoolean): JsonString {
-        return JsonString(this.data + other.data.toString())
-    }
-
-    operator fun plus(other: JsonNull): JsonString {
-        return JsonString(this.data + other.data.toString())
-    }
-
-
-
-}
-
-data class JsonNumber(override val data: Number) : JsonValue{
+data class JsonNumber(override val data: Number) : JsonValue {
     operator fun plus(other: JsonNumber): JsonNumber {
         return JsonNumber(
-                when {
-            this.data is Int && other.data is Int -> this.data + other.data
-            this.data is Long && other.data is Long -> this.data + other.data
-            this.data is Double && other.data is Double -> this.data + other.data
-            else -> this.data.toDouble() + other.data.toDouble()
-        })
+            when {
+                this.data is Int && other.data is Int -> this.data + other.data
+                this.data is Long && other.data is Long -> this.data + other.data
+                this.data is Double && other.data is Double -> this.data + other.data
+                else -> this.data.toDouble() + other.data.toDouble()
+            }
+        )
     }
 
     operator fun minus(other: JsonNumber): JsonNumber {
@@ -58,7 +19,8 @@ data class JsonNumber(override val data: Number) : JsonValue{
                 this.data is Long && other.data is Long -> this.data - other.data
                 this.data is Double && other.data is Double -> this.data - other.data
                 else -> this.data.toDouble() - other.data.toDouble()
-            })
+            }
+        )
     }
 
     operator fun times(other: JsonNumber): JsonNumber {
@@ -68,7 +30,8 @@ data class JsonNumber(override val data: Number) : JsonValue{
                 this.data is Long && other.data is Long -> this.data * other.data
                 this.data is Double && other.data is Double -> this.data * other.data
                 else -> this.data.toDouble() * other.data.toDouble()
-            })
+            }
+        )
 
 
     }
@@ -94,6 +57,7 @@ data class JsonNumber(override val data: Number) : JsonValue{
             }
         )
     }
+
     //To check
     operator fun unaryPlus(): JsonNumber {
         return JsonNumber(this.data)
@@ -163,24 +127,3 @@ data class JsonNumber(override val data: Number) : JsonValue{
         }
     }
 }
-
-data class JsonBoolean(override val data: Boolean) : JsonValue {
-    override fun equals(other: Any?): Boolean {
-        require(other is JsonBoolean)
-        return this.data == other.data
-    }
-
-    override fun hashCode(): Int {
-        return this.data.hashCode()
-    }
-
-    operator fun not(): JsonBoolean {
-        return JsonBoolean(!this.data)
-    }
-
-
-
-
-}
-
-

@@ -1,22 +1,19 @@
-import iscte.main.kjson.JsonBoolean
-import iscte.main.kjson.JsonNull
-import iscte.main.kjson.JsonNumber
-import iscte.main.kjson.JsonObject
-import iscte.main.kjson.JsonString
-import iscte.main.kjson.MutableJsonObject
+import iscte.main.kjson.model.JsonArray
+import iscte.main.kjson.model.JsonBoolean
+import iscte.main.kjson.model.JsonNull
+import iscte.main.kjson.model.JsonNumber
+import iscte.main.kjson.model.JsonObject
+import iscte.main.kjson.model.JsonString
+import iscte.main.kjson.model.MutableJsonObject
+import org.junit.jupiter.api.Assertions.assertFalse
 
 fun main() {
-    val obj : MutableJsonObject = MutableJsonObject(mutableMapOf(
-        "unidade curricular" to JsonString("PA"),
-        "nota" to JsonNumber(20),
-        "aprovado" to JsonBoolean(true),
-        "data de entrega" to JsonNull,
-        "professor" to JsonObject(mapOf(
-            "nome" to JsonString("André"),
-            "idade" to JsonNull,
-            "homem" to JsonBoolean(true),
-            "gabinete" to JsonString("D6.23")
-        ))
-    ))
-    MutableJsonObject()
+    val jsonArray2 = JsonArray(
+        listOf(
+            JsonString("Hello"),
+            JsonNumber(1),
+            JsonBoolean(false)
+        )
+    )
+    print(jsonArray2.isAllSameType())
 }

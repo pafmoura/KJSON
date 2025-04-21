@@ -1,12 +1,9 @@
 package iscte.tests.kjson
 
-import iscte.main.kjson.JsonBoolean
-import iscte.main.kjson.JsonNull
-import iscte.main.kjson.JsonNumber
-import iscte.main.kjson.JsonObject
-import iscte.main.kjson.JsonString
-import iscte.main.kjson.JsonValue
-import iscte.main.kjson.MutableJsonObject
+import iscte.main.kjson.model.JsonBoolean
+import iscte.main.kjson.model.JsonNull
+import iscte.main.kjson.model.JsonNumber
+import iscte.main.kjson.model.JsonString
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 

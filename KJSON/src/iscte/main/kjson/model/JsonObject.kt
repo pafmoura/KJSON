@@ -1,35 +1,24 @@
-package iscte.main.kjson
+package iscte.main.kjson.model
 
 interface JsonObjectBase : JsonValue, Map<String, JsonValue> {
+
     override fun toJsonString(): String {
         return entries.joinToString(
             separator = ", ", prefix = "{", postfix = "}"
         ) { "\"${it.key}\": ${it.value.toJsonString()}" }
     }
 
-
-    override fun accept(visitor: (Map.Entry<String, JsonValue>) -> Unit) {
+    override fun accept(visitor: JsonVisitor) {
         entries.forEach { entry ->
-            visitor(entry)
+            visitor.visit(entry)
             entry.value.accept(visitor)
         }
     }
 
-    fun isValid(): Boolean {
-        var valid = true
-        if (keys.toSet().size != keys.size) {
-            return false
-        }
-        accept { entry ->
-            if (entry.key.isEmpty()) {
-                valid = false
-            }
-            // redundante
-            // if (entry.value !is JsonValue) {
-            //      valid = false
-            //  }
-        }
-        return valid
+    fun isValidObject() : Boolean {
+        val visitor = VisitorValidObject()
+        this.accept(visitor)
+        return visitor.isValid()
     }
 
 
