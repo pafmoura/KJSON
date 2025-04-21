@@ -7,30 +7,44 @@ interface JsonObjectBase : JsonValue, Map<String, JsonValue> {
         ) { "\"${it.key}\": ${it.value.toJsonString()}" }
     }
 
-    override fun acceptValue(visitor: (JsonValue) -> Unit) {
+
+    override fun accept(visitor: (Map.Entry<String, JsonValue>) -> Unit) {
         entries.forEach { entry ->
-            entry.value.acceptValue(visitor)
+            visitor(entry)
+            entry.value.accept(visitor)
         }
     }
 
-    override fun acceptEntry(visitor: (Map.Entry<String, JsonValue>) -> Unit) {
-        entries.forEach { entry ->
-            visitor(entry)
-            entry.value.acceptEntry(visitor)
+    fun isValid(): Boolean {
+        var valid = true
+        if (keys.toSet().size != keys.size) {
+            return false
         }
+        accept { entry ->
+            if (entry.key.isEmpty()) {
+                valid = false
+            }
+            // redundante
+            // if (entry.value !is JsonValue) {
+            //      valid = false
+            //  }
+        }
+        return valid
     }
+
 
 }
 
 class MutableJsonObject(
     val properties: MutableMap<String, JsonValue> = mutableMapOf()
 ) : MutableMap<String, JsonValue> by properties, JsonObjectBase {
-    override val value: Map<String, JsonValue> get() = properties
+    override val data: Map<String, JsonValue> get() = properties
 }
 
 class JsonObject(
     val properties: Map<String, JsonValue> = mapOf()
 ) : Map<String, JsonValue> by properties, JsonObjectBase {
-    override val value: Map<String, JsonValue> get() = properties
+    override val data: Map<String, JsonValue> get() = properties
+
 
 }
