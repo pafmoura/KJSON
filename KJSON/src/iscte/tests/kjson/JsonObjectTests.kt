@@ -1,13 +1,6 @@
 package iscte.tests.kjson
 
-import iscte.main.kjson.model.JsonBoolean
-import iscte.main.kjson.model.JsonNull
-import iscte.main.kjson.model.JsonNumber
-import iscte.main.kjson.model.JsonObject
-import iscte.main.kjson.model.JsonString
-import iscte.main.kjson.model.MutableJsonObject
-import iscte.main.kjson.model.VisitorAllSameType
-import iscte.main.kjson.model.VisitorValidObject
+import iscte.main.kjson.model.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 
@@ -119,7 +112,7 @@ class JsonObjectTests {
 
         cadeiraJson.accept(visitor)
 
-        assertFalse(visitor.isValid())
+        assertTrue(visitor.isValid())
 
         val validJson: MutableJsonObject = MutableJsonObject(
             mutableMapOf(
@@ -136,4 +129,28 @@ class JsonObjectTests {
 
         assertTrue(visitor1.isValid())
     }
+
+
+    @Test
+    fun testSerialization() {
+
+        val jsonArray1 = JsonArray(listOf(JsonNumber(2025), JsonNumber(12)))
+        val expectedArray1 = "[2025, 12]"
+        assertEquals(expectedArray1, jsonArray1.toJsonString())
+
+
+        val jsonObject1 = JsonObject(
+            mapOf(
+                "name" to JsonString("John"),
+                "age" to JsonNumber(30),
+                "isStudent" to JsonBoolean(false),
+                "courses" to JsonNull
+            )
+        )
+
+        val expectedJsonString = "{\"name\": \"John\", \"age\": 30, \"isStudent\": false, \"courses\": null}"
+        assertEquals(expectedJsonString, jsonObject1.toJsonString())
+    }
+
+
 }

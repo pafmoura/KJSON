@@ -16,7 +16,7 @@ class VisitorValidObject : JsonVisitor {
     }
 
     override fun visit(element: Map.Entry<String, JsonValue>): Unit {
-        isValid = isValid && element.key.isNotEmpty() && keys.add(element.key)
+        isValid = isValid && keys.add(element.key)
     }
 
     fun isValid() = isValid

@@ -15,7 +15,7 @@ interface JsonObjectBase : JsonValue, Map<String, JsonValue> {
         }
     }
 
-    fun isValidObject() : Boolean {
+    fun isValidObject(): Boolean {
         val visitor = VisitorValidObject()
         this.accept(visitor)
         return visitor.isValid()

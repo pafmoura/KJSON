@@ -21,11 +21,13 @@ class JsonTypesTests {
         assertEquals("Hello", JsonString("Hello").data)
         assertEquals("World", JsonString("World").data)
     }
+
     @Test
     fun createJsonBooleansTest() {
-        assertTrue(JsonBoolean(true).data )
+        assertTrue(JsonBoolean(true).data)
         assertFalse(JsonBoolean(false).data)
     }
+
     @Test
     fun createJsonNullTest() {
         assertNull(JsonNull.data)
@@ -68,7 +70,7 @@ class JsonTypesTests {
     }
 
     @Test
-    fun stringOperatorsTest(){
+    fun stringOperatorsTest() {
         val str1 = JsonString("Hello")
         val str2 = JsonString("World")
         val result = str1 + str2

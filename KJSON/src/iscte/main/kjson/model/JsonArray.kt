@@ -1,6 +1,10 @@
 package iscte.main.kjson.model
 
-class JsonArray(override val data: List<JsonValue>) : JsonValue, List<JsonValue> by data {
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+
+interface JsonArrayBase : JsonValue, List<JsonValue> {
+    override val data: List<JsonValue> //Pode ser mais bonito?
 
     override fun toJsonString(): String {
         return data.joinToString(
@@ -8,7 +12,7 @@ class JsonArray(override val data: List<JsonValue>) : JsonValue, List<JsonValue>
         ) { it.toJsonString() }
     }
 
-    override fun accept(visitor : JsonVisitor) {
+    override fun accept(visitor: JsonVisitor) {
         data.forEach {
             visitor.visit(it)
         }
@@ -21,4 +25,21 @@ class JsonArray(override val data: List<JsonValue>) : JsonValue, List<JsonValue>
     }
 
 
+}
+
+
+class JsonArray(override val data: List<JsonValue>) : JsonArrayBase, List<JsonValue> by data {
+    operator fun plus(other: JsonArray): JsonArray {
+        return JsonArray(this.data + other.data)
+    }
+}
+
+
+class MutableJsonArray(val _data: MutableList<JsonValue>) : JsonArrayBase, MutableList<JsonValue> by _data {
+
+    override val data: List<JsonValue> get() = _data
+
+    operator fun plus(other: MutableJsonArray): MutableJsonArray {
+        return MutableJsonArray((_data + other._data).toMutableList())
+    }
 }

@@ -1,13 +1,6 @@
 package iscte.tests.kjson
 
-import iscte.main.kjson.model.JsonArray
-import iscte.main.kjson.model.JsonBoolean
-import iscte.main.kjson.model.JsonNull
-import iscte.main.kjson.model.JsonNumber
-import iscte.main.kjson.model.JsonObject
-import iscte.main.kjson.model.JsonString
-import iscte.main.kjson.model.MutableJsonObject
-import iscte.main.kjson.model.VisitorAllSameType
+import iscte.main.kjson.model.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 
@@ -32,7 +25,7 @@ class JsonArrayTests {
         )
     }
 
-    fun getCadeiraJson1() : JsonObject{
+    fun getCadeiraJson1(): JsonObject {
         return JsonObject(
             mutableMapOf(
                 "" to JsonString("PA"),
@@ -126,4 +119,24 @@ class JsonArrayTests {
         jsonArray5.accept(visitor5)
         assertFalse(visitor5.isValid())
     }
+
+
+    @Test
+    fun testJoinJsonArrays() {
+        val jsonArray1 = JsonArray(listOf(JsonNumber(1), JsonNumber(2), JsonNumber(3)))
+        val jsonArray2 = JsonArray(listOf(JsonNumber(4), JsonNumber(5), JsonNumber(6)))
+
+        val expectedSum =
+            JsonArray(listOf(JsonNumber(1), JsonNumber(2), JsonNumber(3), JsonNumber(4), JsonNumber(5), JsonNumber(6)))
+        val result = jsonArray1 + jsonArray2
+        assertEquals(expectedSum.toJsonString(), result.toJsonString())
+    }
+
+    @Test
+    fun testAddToJsonArrays() {
+        val jsonArray1 = MutableJsonArray(mutableListOf(JsonNumber(1), JsonNumber(2), JsonNumber(3)))
+//FINISH
+
+    }
+
 }
