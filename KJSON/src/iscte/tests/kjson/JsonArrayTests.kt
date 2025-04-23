@@ -3,6 +3,7 @@ package iscte.tests.kjson
 import iscte.main.kjson.model.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
+import javax.swing.DefaultListSelectionModel
 import kotlin.reflect.KClass
 
 class JsonArrayTests {
@@ -126,7 +127,7 @@ class JsonArrayTests {
     fun testJoinJsonArrays() {
         val jsonArray1 = JsonArray(listOf(JsonNumber(1), JsonNumber(2), JsonNumber(3)))
         val jsonArray2 = JsonArray(listOf(JsonNumber(4), JsonNumber(5), JsonNumber(6)))
-        jsonArray2.forEach {  }
+        jsonArray2.forEach { }
         val expectedSum =
             JsonArray(listOf(JsonNumber(1), JsonNumber(2), JsonNumber(3), JsonNumber(4), JsonNumber(5), JsonNumber(6)))
         val result = jsonArray1 + jsonArray2
@@ -136,8 +137,9 @@ class JsonArrayTests {
     @Test
     fun testAddToJsonArrays() {
         val jsonArray1 = MutableJsonArray(mutableListOf(JsonNumber(1), JsonNumber(2), JsonNumber(3)))
-//FINISH
-
+        assertTrue { jsonArray1.isAllSameType() }
+        jsonArray1.add(JsonString("teste"))
+        assertFalse { jsonArray1.isAllSameType() }
     }
 
     @Test
@@ -146,7 +148,7 @@ class JsonArrayTests {
         var firstElementClass: KClass<out JsonValue>? = null
         var isValid = true
 
-        cadeiraJson.accept{ element ->
+        cadeiraJson.accept { element ->
             if (firstElementClass == null)
                 firstElementClass = element::class
 
@@ -159,7 +161,7 @@ class JsonArrayTests {
 
         firstElementClass = null
         isValid = true
-        validJson.accept{ element ->
+        validJson.accept { element ->
             if (firstElementClass == null)
                 firstElementClass = element::class
 
@@ -169,4 +171,104 @@ class JsonArrayTests {
         assertFalse(isValid)
     }
 
-}
+    @Test
+    fun testSublist() {
+        var originalArray = JsonArray(listOf(JsonNumber(1), JsonNumber(2), JsonNumber(3)))
+        var newArray = originalArray.subList(1, 3)
+        assertEquals(JsonArray(listOf(JsonNumber(2), JsonNumber(3))).toJsonString(), newArray.toJsonString())
+    }
+
+    @Test
+    fun testArrayEquals() {
+        var originalArray = JsonArray(listOf(JsonNumber(1), JsonNumber(2), JsonNumber(3)))
+        var newArray = originalArray.subList(1, 3)
+        assertTrue(JsonArray(listOf(JsonNumber(2), JsonNumber(3))).equals(newArray))
+    }
+
+    @Test
+    fun testMapArray() {
+        var arr = JsonArray(listOf(JsonNumber(1), JsonNumber(2), JsonNumber(3)))
+        var newArr = arr.map({ x -> x as JsonNumber + JsonNumber(1) })
+        assertEquals(JsonArray(listOf(JsonNumber(2), JsonNumber(3), JsonNumber(4))), newArr)
+
+        var arr1 = JsonArray(listOf(JsonNumber(1), JsonNumber(2), JsonNumber(3)))
+        var newArr1 = arr1.map { x ->
+            when (x) {
+                is JsonNumber -> x + JsonNumber(1)
+                else -> x
+            }
+        }
+
+        assertEquals(JsonArray(listOf(JsonNumber(2), JsonNumber(3), JsonNumber(4))), newArr1)
+
+
+        var arr2 =
+            JsonArray(
+                listOf(
+                    JsonNumber(1),
+                    JsonNumber(2),
+                    JsonArray(listOf(JsonNumber(1), JsonNumber(2), JsonNumber(3)))
+                )
+            )
+        var newArr2 = arr2.map { x ->
+            when (x) {
+                is JsonNumber -> x + JsonNumber(1)
+                else -> x
+            }
+
+        }
+        assertEquals(
+            JsonArray(
+                listOf(
+                    JsonNumber(2),
+                    JsonNumber(3),
+                    JsonArray(listOf(JsonNumber(2), JsonNumber(3), JsonNumber(4)))
+                )
+            ), newArr2
+        )
+
+
+
+        var arr3 = JsonArray(
+            listOf(
+                JsonString("Lista de Alunos"),
+                JsonObject(
+                    mapOf(
+                        "nome" to JsonString("Adérito"),
+                        "unidade curricular" to JsonString("PA"),
+                        "aprovado" to JsonString("Confirmado")
+                    )
+                )
+            )
+        )
+
+        var newArr3 = arr3.map(
+            { x ->
+                when (x) {
+                    is JsonString -> JsonString("-${x.data}-")
+                    else -> x
+                }
+            },
+            keyAction = { y ->
+                "---${y}---"
+            }
+
+
+        )
+
+        assertEquals(
+            "[\"-Lista de Alunos-\", {\"---nome---\": \"-Adérito-\", \"---unidade curricular---\": \"-PA-\", \"---aprovado---\": \"-Confirmado-\"}]",
+            newArr3.toJsonString()
+        )
+    }
+
+
+
+
+    }
+
+
+
+
+
+

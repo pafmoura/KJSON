@@ -10,6 +10,7 @@ interface JsonObjectBase : JsonValue, Map<String, JsonValue> {
 
     override fun accept(visitor: JsonVisitor) {
         entries.forEach { entry ->
+
             when (visitor) {
                 is JsonEntryVisitor -> {
                     visitor.visit(entry)
@@ -32,11 +33,18 @@ interface JsonObjectBase : JsonValue, Map<String, JsonValue> {
         }
     }
 
+    fun isAllSameType(): Boolean {
+        val visitor = VisitorAllSameType()
+        this.accept(visitor)
+        return visitor.isValid()
+    }
+
     fun isValidObject(): Boolean {
         val visitor = VisitorValidObject()
         this.accept(visitor)
         return visitor.isValid()
     }
+
 
 
 }
@@ -45,6 +53,37 @@ class MutableJsonObject(
     val properties: MutableMap<String, JsonValue> = mutableMapOf()
 ) : MutableMap<String, JsonValue> by properties, JsonObjectBase {
     override val data: Map<String, JsonValue> get() = properties
+
+
+
+
+    fun filter(valuePredicate: (JsonValue) -> Boolean, keyPredicate: (String) -> Boolean = { key -> true } ): MutableJsonObject {
+        val filteredMap = mutableMapOf<String, JsonValue>()
+        this.accept { entry ->
+            when (entry.value) {
+
+                is JsonArray -> {
+                    if (keyPredicate(entry.key)) {
+                        val filteredArray = (entry.value as JsonArray).filter(valuePredicate)
+                        if (filteredArray.isNotEmpty()) {
+                            filteredMap.put(entry.key, filteredArray)
+                        }
+                    }
+
+                    }
+
+
+                else -> {
+                    if (valuePredicate(entry.value) && keyPredicate(entry.key)) {
+                        filteredMap.put(entry.key, entry.value)
+                    }
+                }
+
+            }
+        }
+return MutableJsonObject(filteredMap)
+    }
+
 }
 
 class JsonObject(

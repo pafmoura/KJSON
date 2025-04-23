@@ -220,4 +220,19 @@ class JsonObjectTests {
         assertTrue(isValid)
     }
 
+    @Test
+    fun testFilterObject(){
+        val obj1 = MutableJsonObject(
+            mutableMapOf(
+                "unidade curricular" to JsonString("PA"),
+                "Alunos" to JsonArray(listOf(JsonString("Paulo"), JsonString("Filipe"))),
+                "Dias" to JsonArray(listOf(JsonNumber(2), JsonNumber(5), JsonNumber(7))
+            )))
+
+        println(obj1.filter(
+            valuePredicate = { it == JsonString("Paulo") },
+            keyPredicate = { key -> key == "Alunos" }
+        ).toJsonString())
+    }
+
 }
