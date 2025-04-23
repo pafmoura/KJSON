@@ -13,8 +13,16 @@ interface JsonArrayBase : JsonValue, List<JsonValue> {
     }
 
     override fun accept(visitor: JsonVisitor) {
-        data.forEach {
-            visitor.visit(it)
+        data.forEach { element ->
+            when (visitor) {
+                is JsonValueVisitor -> visitor.visit(element)
+            }
+        }
+    }
+
+    fun accept(action: (JsonValue) -> Unit) {
+        data.forEach { element ->
+            action(element)
         }
     }
 

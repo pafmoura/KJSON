@@ -2,18 +2,19 @@ package iscte.main.kjson.model
 
 import kotlin.reflect.KClass
 
-interface JsonVisitor {
+interface JsonVisitor
+
+interface JsonValueVisitor : JsonVisitor {
     fun visit(element: JsonValue) {}
+}
+
+interface JsonEntryVisitor : JsonVisitor {
     fun visit(element: Map.Entry<String, JsonValue>) {}
 }
 
-class VisitorValidObject : JsonVisitor {
+class VisitorValidObject : JsonValueVisitor, JsonEntryVisitor {
     private val keys = mutableSetOf<String>()
     private var isValid = true
-
-    override fun visit(element: JsonValue) {
-        element.accept(this)
-    }
 
     override fun visit(element: Map.Entry<String, JsonValue>): Unit {
         isValid = isValid && keys.add(element.key)
@@ -22,7 +23,7 @@ class VisitorValidObject : JsonVisitor {
     fun isValid() = isValid
 }
 
-class VisitorAllSameType : JsonVisitor {
+class VisitorAllSameType : JsonValueVisitor, JsonEntryVisitor {
     private var firstElementClass: KClass<out JsonValue>? = null
     private var isValid = true
 
@@ -34,7 +35,7 @@ class VisitorAllSameType : JsonVisitor {
     }
 
     override fun visit(element: Map.Entry<String, JsonValue>): Unit {
-        element.value.accept(this)
+        visit(element.value)
     }
 
     fun isValid() = isValid

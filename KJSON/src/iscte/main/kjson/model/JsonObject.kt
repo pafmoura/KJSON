@@ -10,8 +10,25 @@ interface JsonObjectBase : JsonValue, Map<String, JsonValue> {
 
     override fun accept(visitor: JsonVisitor) {
         entries.forEach { entry ->
-            visitor.visit(entry)
-            entry.value.accept(visitor)
+            when (visitor) {
+                is JsonEntryVisitor -> {
+                    visitor.visit(entry)
+                    entry.value.accept(visitor)
+                }
+
+                is JsonValueVisitor -> {
+                    visitor.visit(entry.value)
+                    entry.value.accept(visitor)
+                }
+            }
+        }
+    }
+
+    fun accept(action: (Map.Entry<String, JsonValue>) -> Unit) {
+        entries.forEach { entry ->
+            action(entry)
+            if (entry.value is JsonObjectBase)
+                (entry.value as JsonObjectBase).accept(action)
         }
     }
 

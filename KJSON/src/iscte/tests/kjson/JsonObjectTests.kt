@@ -3,6 +3,7 @@ package iscte.tests.kjson
 import iscte.main.kjson.model.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
+import kotlin.reflect.KClass
 
 class JsonObjectTests {
 
@@ -102,7 +103,7 @@ class JsonObjectTests {
             )
         )
 
-        assertFalse(notValidJson.isValidObject())
+        assertTrue(notValidJson.isValidObject())
     }
 
     @Test
@@ -112,7 +113,7 @@ class JsonObjectTests {
 
         cadeiraJson.accept(visitor)
 
-        assertTrue(visitor.isValid())
+        assertFalse(visitor.isValid())
 
         val validJson: MutableJsonObject = MutableJsonObject(
             mutableMapOf(
@@ -125,7 +126,7 @@ class JsonObjectTests {
 
         val visitor1 = VisitorAllSameType()
 
-        cadeiraJson.accept(visitor)
+        validJson.accept(visitor1)
 
         assertTrue(visitor1.isValid())
     }
@@ -152,5 +153,71 @@ class JsonObjectTests {
         assertEquals(expectedJsonString, jsonObject1.toJsonString())
     }
 
+    @Test
+    fun testCustomVisitorAllTypes() {
+        val cadeiraJson: MutableJsonObject = getCadeiraMutableJson()
+        var firstElementClass: KClass<out JsonValue>? = null
+        var isValid = true
+
+        cadeiraJson.accept{ entry ->
+            if (firstElementClass == null)
+                firstElementClass = entry.value::class
+
+            isValid = isValid && entry.value::class == firstElementClass && entry.value !is JsonNull
+        }
+
+        assertFalse(isValid)
+
+        val validJson: MutableJsonObject = MutableJsonObject(
+            mutableMapOf(
+                "" to JsonString("PA"),
+                "nota" to JsonString("PA"),
+                "nota" to JsonString("PA"),
+                "aprovado" to JsonString("PA"),
+            )
+        )
+
+        firstElementClass = null
+        isValid = true
+        validJson.accept{ entry ->
+            if (firstElementClass == null)
+                firstElementClass = entry.value::class
+
+            isValid = isValid && entry.value::class == firstElementClass && entry.value !is JsonNull
+        }
+
+        assertTrue(isValid)
+    }
+
+    @Test
+    fun testCustomVisitorValidObject(){
+        val cadeiraJson: MutableJsonObject = getCadeiraMutableJson()
+        var keys = mutableSetOf<String>()
+        var isValid = true
+
+        cadeiraJson.accept{ entry ->
+            isValid = isValid && keys.add(entry.key)
+        }
+
+        assertTrue(isValid)
+
+        val notValidJson: MutableJsonObject = MutableJsonObject(
+            mutableMapOf(
+                "" to JsonString("PA"),
+                "nota" to JsonNumber(20),
+                "nota" to JsonNumber(16),
+                "aprovado" to JsonBoolean(true),
+            )
+        )
+
+        keys = mutableSetOf<String>()
+        isValid = true
+
+        notValidJson.accept{ entry ->
+            isValid = isValid && keys.add(entry.key)
+        }
+
+        assertTrue(isValid)
+    }
 
 }

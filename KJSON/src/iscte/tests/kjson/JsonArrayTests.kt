@@ -3,6 +3,7 @@ package iscte.tests.kjson
 import iscte.main.kjson.model.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
+import kotlin.reflect.KClass
 
 class JsonArrayTests {
 
@@ -125,7 +126,7 @@ class JsonArrayTests {
     fun testJoinJsonArrays() {
         val jsonArray1 = JsonArray(listOf(JsonNumber(1), JsonNumber(2), JsonNumber(3)))
         val jsonArray2 = JsonArray(listOf(JsonNumber(4), JsonNumber(5), JsonNumber(6)))
-
+        jsonArray2.forEach {  }
         val expectedSum =
             JsonArray(listOf(JsonNumber(1), JsonNumber(2), JsonNumber(3), JsonNumber(4), JsonNumber(5), JsonNumber(6)))
         val result = jsonArray1 + jsonArray2
@@ -137,6 +138,35 @@ class JsonArrayTests {
         val jsonArray1 = MutableJsonArray(mutableListOf(JsonNumber(1), JsonNumber(2), JsonNumber(3)))
 //FINISH
 
+    }
+
+    @Test
+    fun testCustomVisitor() {
+        val cadeiraJson = JsonArray(listOf(JsonNumber(1), JsonNumber(2), JsonNumber(3)))
+        var firstElementClass: KClass<out JsonValue>? = null
+        var isValid = true
+
+        cadeiraJson.accept{ element ->
+            if (firstElementClass == null)
+                firstElementClass = element::class
+
+            isValid = isValid && element::class == firstElementClass && element !is JsonNull
+        }
+
+        assertTrue(isValid)
+
+        val validJson = JsonArray(listOf(JsonString("1"), JsonNumber(2), JsonNumber(3)))
+
+        firstElementClass = null
+        isValid = true
+        validJson.accept{ element ->
+            if (firstElementClass == null)
+                firstElementClass = element::class
+
+            isValid = isValid && element::class == firstElementClass && element !is JsonNull
+        }
+
+        assertFalse(isValid)
     }
 
 }
