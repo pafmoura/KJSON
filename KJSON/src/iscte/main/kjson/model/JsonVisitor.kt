@@ -2,40 +2,41 @@ package iscte.main.kjson.model
 
 import kotlin.reflect.KClass
 
-interface JsonVisitor
-
-interface JsonValueVisitor : JsonVisitor {
-    fun visit(element: JsonValue) {}
+interface JsonVisitor{
+    fun visit(value: JsonValue)
+    fun visit(entry: Map.Entry<String, JsonValue>)
 }
 
-interface JsonEntryVisitor : JsonVisitor {
-    fun visit(element: Map.Entry<String, JsonValue>) {}
-}
 
-class VisitorValidObject : JsonValueVisitor, JsonEntryVisitor {
+
+
+class VisitorValidObject : JsonVisitor {
     private val keys = mutableSetOf<String>()
     private var isValid = true
 
-    override fun visit(element: Map.Entry<String, JsonValue>): Unit {
-        isValid = isValid && keys.add(element.key)
+    override fun visit(value: JsonValue) {
+
+    }
+
+    override fun visit(entry: Map.Entry<String, JsonValue>): Unit {
+        isValid = isValid && keys.add(entry.key)
     }
 
     fun isValid() = isValid
 }
 
-class VisitorAllSameType : JsonValueVisitor, JsonEntryVisitor {
+class VisitorAllSameType : JsonVisitor {
     private var firstElementClass: KClass<out JsonValue>? = null
     private var isValid = true
 
-    override fun visit(element: JsonValue) {
+    override fun visit(value: JsonValue) {
         if (firstElementClass == null)
-            firstElementClass = element::class
+            firstElementClass = value::class
 
-        isValid = isValid && element::class == firstElementClass && element !is JsonNull
+        isValid = isValid && value::class == firstElementClass && value !is JsonNull
     }
 
-    override fun visit(element: Map.Entry<String, JsonValue>): Unit {
-        visit(element.value)
+    override fun visit(entry: Map.Entry<String, JsonValue>): Unit {
     }
 
     fun isValid() = isValid
