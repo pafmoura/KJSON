@@ -262,10 +262,55 @@ class JsonArrayTests {
         )
     }
 
+@Test
+fun testFilterArray() {
+    val jsonArray = JsonArray(
+        listOf(
+            MutableJsonObject(
+                mutableMapOf(
+                    "nome" to JsonString("Adérito"),
+                    "unidade curricular" to JsonString("PA"),
+                    "idade" to JsonNumber(23)
+                )
+            ),
+            MutableJsonObject(
+                mutableMapOf(
+                    "nome" to JsonString("André"),
+                    "unidade curricular" to JsonString("PA"),
+                    "idade" to JsonNumber(26)
+                )
+            ),
+            JsonArray(
+                listOf(
+                    JsonNumber(47),
+                    JsonNumber(42),
+                    JsonBoolean(true)
+                )
 
+            )
+    ))
+    val filterByAge = jsonArray.filter(
+        predicate = { v -> v is JsonNumber && v.data as Int > 25 },
+       keyPredicate = { k -> k == "idade" }
+    )
+    print(filterByAge.toJsonString())
 
+    var jarr2 = JsonArray(
+        listOf(
+            JsonNumber(47),
+            JsonNumber(42),
+            JsonNumber(12),
+            JsonNumber(27)
+        ))
 
-    }
+    var filterOver25 = jarr2.filter(
+        predicate = { v -> v is JsonNumber && v.data as Int > 25 })
+
+    println(filterOver25.toJsonString())
+}
+
+}
+
 
 
 

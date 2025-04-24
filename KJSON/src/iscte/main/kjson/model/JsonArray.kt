@@ -121,8 +121,12 @@ class JsonArray(override val data: List<JsonValue>) : JsonArrayBase, List<JsonVa
         val filteredList = mutableListOf<JsonValue>()
         this.accept { value ->
             when (value) {
-                is JsonObjectBase -> {
-//TODO
+                is MutableJsonObject -> { //TEMOS DE FAZER CLASSE ABSTRATA
+
+                    var filtered = value.filter(predicate,keyPredicate)
+                    if (filtered.isNotEmpty()) {
+                        filteredList.add(filtered)
+                    }
                 }
 
                 is JsonArray -> {
