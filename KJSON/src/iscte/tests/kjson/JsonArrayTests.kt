@@ -291,7 +291,7 @@ fun testFilterArray() {
     ))
     val filterByAge = jsonArray.filter(
         predicate = { v -> v is JsonNumber && v.data as Int > 25 },
-       keyPredicate = { k -> k == "idade" }
+      // keyPredicate = { k -> k == "idade" }
     )
     print(filterByAge.toJsonString())
 
@@ -303,10 +303,9 @@ fun testFilterArray() {
             JsonNumber(27)
         ))
 
-    var filterOver25 = jarr2.filter(
-        predicate = { v -> v is JsonNumber && v.data as Int > 25 })
+   // var filterOver25 = jarr2.filter(
+     //   predicate = { v -> v is JsonNumber && v.data as Int > 25 })
 
-    println(filterOver25.toJsonString())
 }
 
 }

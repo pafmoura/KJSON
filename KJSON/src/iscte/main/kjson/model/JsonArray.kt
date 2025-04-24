@@ -106,20 +106,13 @@ class JsonArray(override val data: List<JsonValue>) : JsonArrayBase, List<JsonVa
         return JsonArray(mappedList)
     }
 
-    fun filter(predicate: (JsonValue) -> Boolean): JsonArray {
-        val filteredList = mutableListOf<JsonValue>()
-        this.accept { value ->
-
-            if (predicate(value)) {
-                filteredList.add(value)
-            }
-        }
-        return JsonArray(filteredList)
-    }
 
     fun filter(predicate: (JsonValue) -> Boolean, keyPredicate: (String) -> Boolean = { key -> true } ): JsonArray {
         val filteredList = mutableListOf<JsonValue>()
-        this.accept { value ->
+        this.accept {
+
+            value ->
+            print(value.toJsonString())
             when (value) {
                 is MutableJsonObject -> { //TEMOS DE FAZER CLASSE ABSTRATA
 
@@ -130,10 +123,14 @@ class JsonArray(override val data: List<JsonValue>) : JsonArrayBase, List<JsonVa
                 }
 
                 is JsonArray -> {
+                    var filteredArr = MutableJsonArray(mutableListOf())
                     value.accept { entry ->
-                        if (predicate(entry) && keyPredicate(entry.toString())) {
-                            filteredList.add(entry)
+                        if (predicate(entry)) {
+                            filteredArr.add(entry)
                         }
+                    }
+                    if (filteredArr.isNotEmpty()) {
+                        filteredList.add(JsonArray(filteredArr))
                     }
                 }
 
