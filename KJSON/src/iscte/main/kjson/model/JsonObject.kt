@@ -1,6 +1,10 @@
 package iscte.main.kjson.model
 
-interface JsonObjectBase : JsonValue, Map<String, JsonValue> {
+abstract class JsonObjectBase(
+    val properties: Map<String, JsonValue> = mapOf()
+) : JsonValue, Map<String, JsonValue> {
+
+    override val data: Map<String, JsonValue> get() = properties
 
     override fun toJsonString(): String {
         return entries.joinToString(
@@ -8,29 +12,22 @@ interface JsonObjectBase : JsonValue, Map<String, JsonValue> {
         ) { "\"${it.key}\": ${it.value.toJsonString()}" }
     }
 
-    override fun accept(visitor: JsonVisitor) {
-        entries.forEach { entry ->
-
-            when (visitor) {
-                is JsonEntryVisitor -> {
-                    visitor.visit(entry)
-                    entry.value.accept(visitor)
-                }
-
-                is JsonValueVisitor -> {
-                    visitor.visit(entry.value)
-                    entry.value.accept(visitor)
-                }
-            }
-        }
+    open fun filter(
+        valuePredicate: (JsonValue) -> Boolean,
+        keyPredicate: (String) -> Boolean
+    ): JsonObjectBase {
+        val visitor = VisitorFilterObject(valuePredicate, keyPredicate)
+        accept(visitor)
+        return visitor.getResult()
     }
 
-    fun accept(action: (Map.Entry<String, JsonValue>) -> Unit) {
-        entries.forEach { entry ->
-            action(entry)
-            if (entry.value is JsonObjectBase)
-                (entry.value as JsonObjectBase).accept(action)
-        }
+    open fun map(
+        valueAction: (JsonValue) -> JsonValue,
+        keyAction: (String) -> String
+    ): JsonObjectBase {
+        val visitor = VisitorMapObject(valueAction, keyAction)
+        accept(visitor)
+        return visitor.getResult()
     }
 
     fun isAllSameType(): Boolean {
@@ -44,52 +41,66 @@ interface JsonObjectBase : JsonValue, Map<String, JsonValue> {
         this.accept(visitor)
         return visitor.isValid()
     }
-
-
-
 }
 
 class MutableJsonObject(
-    val properties: MutableMap<String, JsonValue> = mutableMapOf()
-) : MutableMap<String, JsonValue> by properties, JsonObjectBase {
-    override val data: Map<String, JsonValue> get() = properties
+    properties: MutableMap<String, JsonValue> = mutableMapOf()
+) : MutableMap<String, JsonValue> by properties, JsonObjectBase(properties) {
 
-
-
-
-    fun filter(valuePredicate: (JsonValue) -> Boolean, keyPredicate: (String) -> Boolean = { key -> true } ): MutableJsonObject {
-        val filteredMap = mutableMapOf<String, JsonValue>()
-        this.accept { entry ->
-            when (entry.value) {
-
-                is JsonArray -> {
-                    if (keyPredicate(entry.key)) {
-                        val filteredArray = (entry.value as JsonArray).filter(valuePredicate)
-                        if (filteredArray.isNotEmpty()) {
-                            filteredMap.put(entry.key, filteredArray)
-                        }
-                    }
-
-                    }
-
-
-                else -> {
-                    if (valuePredicate(entry.value) && keyPredicate(entry.key)) {
-                        filteredMap.put(entry.key, entry.value)
-                    }
-                }
-
-            }
-        }
-return MutableJsonObject(filteredMap)
+    override fun filter(
+        valuePredicate: (JsonValue) -> Boolean,
+        keyPredicate: (String) -> Boolean
+    ): MutableJsonObject {
+        return super.filter(valuePredicate, keyPredicate) as MutableJsonObject
     }
 
+    fun filter(
+        valuePredicate: (JsonValue) -> Boolean
+    ): MutableJsonObject {
+        return super.filter(valuePredicate) { key -> true } as MutableJsonObject
+    }
+
+    override fun map(
+        valueAction: (JsonValue) -> JsonValue,
+        keyAction: (String) -> String
+    ): MutableJsonObject {
+        return super.map(valueAction, keyAction) as MutableJsonObject
+    }
+
+    fun map(
+        valueAction: (JsonValue) -> JsonValue
+    ): MutableJsonObject {
+        return super.map(valueAction){key -> key} as MutableJsonObject
+    }
 }
 
 class JsonObject(
-    val properties: Map<String, JsonValue> = mapOf()
-) : Map<String, JsonValue> by properties, JsonObjectBase {
-    override val data: Map<String, JsonValue> get() = properties
+    properties: Map<String, JsonValue> = mapOf()
+) : Map<String, JsonValue> by properties, JsonObjectBase(properties) {
 
+    override fun filter(
+        valuePredicate: (JsonValue) -> Boolean,
+        keyPredicate: (String) -> Boolean
+    ): JsonObject {
+        return super.filter(valuePredicate, keyPredicate) as JsonObject
+    }
 
+    fun filter(
+        valuePredicate: (JsonValue) -> Boolean
+    ): JsonObject {
+        return super.filter(valuePredicate) { key -> true } as JsonObject
+    }
+
+    override fun map(
+        valueAction: (JsonValue) -> JsonValue,
+        keyAction: (String) -> String
+    ): JsonObject {
+        return super.map(valueAction, keyAction) as JsonObject
+    }
+
+    fun map(
+        valueAction: (JsonValue) -> JsonValue
+    ): JsonObject {
+        return super.map(valueAction){key -> key} as JsonObject
+    }
 }

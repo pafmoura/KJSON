@@ -1,23 +1,37 @@
 package iscte.main.kjson.model
 
-abstract class JsonValue(private val _data : Any) {
-    val data get() = _data
+
+interface JsonValue {
+
+    val data: Any?
+
     fun toJsonString(): String = this.data.toString()
+
     fun accept(visitor: JsonVisitor) {
         when (this) {
             is JsonObjectBase -> {
-                visitor.visit(this)
+                if(visitor.visit(this)){
+                    return
+                }
+
                 this.entries.forEach { entry ->
                     visitor.visit(entry)
                     entry.value.accept(visitor)
                 }
             }
+
             is JsonArrayBase -> {
+                if(visitor.visit(this)){
+                    return
+                }
                 this.forEach { value ->
                     value.accept(visitor)
                 }
             }
-            else -> visitor.visit(this)
+
+            else -> {
+                visitor.visit(this)
+            }
         }
     }
 }
