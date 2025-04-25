@@ -1,5 +1,9 @@
 package iscte.main.kjson.model
 
+import iscte.main.kjson.visitor.VisitorAllSameType
+import iscte.main.kjson.visitor.VisitorFilterArray
+import iscte.main.kjson.visitor.VisitorMapArray
+
 abstract class JsonArrayBase(
     val list: List<JsonValue> = listOf<JsonValue>()
 ) : JsonValue, List<JsonValue> {
@@ -19,7 +23,7 @@ abstract class JsonArrayBase(
         return visitor.isValid()
     }
 
-    fun filter(
+    open fun filter(
         valuePredicate: (JsonValue) -> Boolean,
         keyPredicate: (String) -> Boolean
     ): JsonArrayBase {
@@ -28,7 +32,7 @@ abstract class JsonArrayBase(
         return visitor.getResult()
     }
 
-    fun map(
+    open fun map(
         valueAction: (JsonValue) -> JsonValue,
         keyAction: (String) -> String
     ): JsonArrayBase {
@@ -36,14 +40,39 @@ abstract class JsonArrayBase(
         accept(visitor)
         return visitor.getResult()
     }
-
-
 }
 
 
 class JsonArray(
     list: List<JsonValue>
 ) : JsonArrayBase(list), List<JsonValue> by list {
+
+    override fun filter(
+        valuePredicate: (JsonValue) -> Boolean,
+        keyPredicate: (String) -> Boolean
+    ): JsonArray {
+        return super.filter(valuePredicate, keyPredicate) as JsonArray
+    }
+
+    fun filter(
+        valuePredicate: (JsonValue) -> Boolean
+    ): JsonArray {
+        return super.filter(valuePredicate) { key -> true } as JsonArray
+    }
+
+    override fun map(
+        valueAction: (JsonValue) -> JsonValue,
+        keyAction: (String) -> String
+    ): JsonArray {
+        return super.map(valueAction, keyAction) as JsonArray
+    }
+
+    fun map(
+        valueAction: (JsonValue) -> JsonValue
+    ): JsonArray {
+        return super.map(valueAction){key -> key} as JsonArray
+    }
+
     operator fun plus(other: JsonArray): JsonArray {
         return JsonArray(this.data + other.data)
     }
@@ -58,100 +87,42 @@ class JsonArray(
     override fun equals(other: Any?): Boolean {
         require(other is JsonArray || other is MutableJsonArray)
         return data == other.data
-
-
     }
 
     override fun hashCode(): Int {
         return data.hashCode()
     }
-
-    /*
-    fun map(action: (JsonValue) -> JsonValue): JsonArray {
-
-        val mappedList = mutableListOf<JsonValue>()
-        this.accept { value ->
-            mappedList.add(action(value))
-        }
-        return JsonArray(mappedList)
-
-    }
-    */
-
-//    fun map(action: (JsonValue) -> JsonValue) : JsonArray{
-//        return map(valueAction = action)
-//    }
-
-//    fun map(
-//        valueAction: (JsonValue) -> JsonValue,
-//        keyAction: ((String) -> String) = {k->k}
-//    ): JsonArray {
-//        val mappedList = mutableListOf<JsonValue>()
-//        this.accept { value ->
-//            when (value) {
-//                is JsonArray -> {
-//                    mappedList.add(value.map(valueAction, keyAction))
-//                }
-//                is JsonObjectBase -> {
-//                    val mappedProperties = value.mapValues { (k, v) ->
-//                        val newKey = keyAction(k)
-//                        val newValue = valueAction(v)
-//                        Pair(newKey, newValue)
-//                    }.map { it.value }.toMap()
-//                    mappedList.add(JsonObject(mappedProperties))
-//                }
-//                else -> {
-//                    mappedList.add(valueAction(value))
-//                }
-//            }
-//        }
-//        return JsonArray(mappedList)
-//    }
-
-
-//    fun filter(predicate: (JsonValue) -> Boolean, keyPredicate: (String) -> Boolean = { key -> true } ): JsonArray {
-//        val filteredList = mutableListOf<JsonValue>()
-//        this.accept {
-//
-//            value ->
-//            print(value.toJsonString())
-//            when (value) {
-//                is MutableJsonObject -> { //TEMOS DE FAZER CLASSE ABSTRATA
-//
-//                    var filtered = value.filter(predicate,keyPredicate)
-//                    if (filtered.isNotEmpty()) {
-//                        filteredList.add(filtered)
-//                    }
-//                }
-//
-//                is JsonArray -> {
-//                    var filteredArr = MutableJsonArray(mutableListOf())
-//                    value.accept { entry ->
-//                        if (predicate(entry)) {
-//                            filteredArr.add(entry)
-//                        }
-//                    }
-//                    if (filteredArr.isNotEmpty()) {
-//                        filteredList.add(JsonArray(filteredArr))
-//                    }
-//                }
-//
-//                else -> {
-//                    if (predicate(value)) {
-//                        filteredList.add(value)
-//                    }
-//                }
-//            }
-//        }
-//        return JsonArray(filteredList)
-//    }
-
-
 }
 
 class MutableJsonArray(
     list: MutableList<JsonValue>
 ) : JsonArrayBase(list), MutableList<JsonValue> by list {
+
+    override fun filter(
+        valuePredicate: (JsonValue) -> Boolean,
+        keyPredicate: (String) -> Boolean
+    ): MutableJsonArray {
+        return super.filter(valuePredicate, keyPredicate) as MutableJsonArray
+    }
+
+    fun filter(
+        valuePredicate: (JsonValue) -> Boolean
+    ): MutableJsonArray {
+        return super.filter(valuePredicate) { key -> true } as MutableJsonArray
+    }
+
+    override fun map(
+        valueAction: (JsonValue) -> JsonValue,
+        keyAction: (String) -> String
+    ): MutableJsonArray {
+        return super.map(valueAction, keyAction) as MutableJsonArray
+    }
+
+    fun map(
+        valueAction: (JsonValue) -> JsonValue
+    ): MutableJsonArray {
+        return super.map(valueAction){key -> key} as MutableJsonArray
+    }
 
     operator fun plus(other: MutableJsonArray): MutableJsonArray {
         return MutableJsonArray((list + other.list).toMutableList())
@@ -160,44 +131,10 @@ class MutableJsonArray(
     override fun equals(other: Any?): Boolean {
         require(other is JsonArray || other is MutableJsonArray)
         return data == other.data
-
-
     }
 
     override fun hashCode(): Int {
         return data.hashCode()
     }
 }
-
-
-//        fun map(action: (JsonValue) -> JsonValue) : MutableJsonArray{
-//            return map(valueAction = action)
-//        }
-//
-//        fun map(
-//            valueAction: (JsonValue) -> JsonValue,
-//            keyAction: ((String) -> String) = {k->k}
-//        ): MutableJsonArray {
-//            val mappedList = mutableListOf<JsonValue>()
-//            this.accept { value ->
-//                when (value) {
-//                    is JsonArray -> {
-//                        mappedList.add(value.map(valueAction, keyAction))
-//                    }
-//                    is JsonObjectBase -> {
-//                        val mappedProperties = value.mapValues { (k, v) ->
-//                            val newKey = keyAction(k)
-//                            val newValue = valueAction(v)
-//                            Pair(newKey, newValue)
-//                        }.map { it.value }.toMap()
-//                        mappedList.add(JsonObject(mappedProperties))
-//                    }
-//                    else -> {
-//                        mappedList.add(valueAction(value))
-//                    }
-//                }
-//            }
-//            return MutableJsonArray(mappedList)
-//        }
-//    }
 

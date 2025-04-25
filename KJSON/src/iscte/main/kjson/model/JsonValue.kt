@@ -1,5 +1,7 @@
 package iscte.main.kjson.model
 
+import iscte.main.kjson.visitor.JsonVisitor
+
 
 interface JsonValue {
 

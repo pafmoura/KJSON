@@ -1,5 +1,10 @@
 package iscte.main.kjson.model
 
+import iscte.main.kjson.visitor.VisitorAllSameType
+import iscte.main.kjson.visitor.VisitorFilterObject
+import iscte.main.kjson.visitor.VisitorMapObject
+import iscte.main.kjson.visitor.VisitorValidObject
+
 abstract class JsonObjectBase(
     val properties: Map<String, JsonValue> = mapOf()
 ) : JsonValue, Map<String, JsonValue> {

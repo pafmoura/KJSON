@@ -1,12 +1,7 @@
 import iscte.main.kjson.model.JsonArray
-import iscte.main.kjson.model.JsonBoolean
-import iscte.main.kjson.model.JsonNull
 import iscte.main.kjson.model.JsonNumber
-import iscte.main.kjson.model.JsonObject
 import iscte.main.kjson.model.JsonString
 import iscte.main.kjson.model.MutableJsonObject
-import iscte.main.kjson.model.VisitorAllSameType
-import org.junit.jupiter.api.Assertions.assertFalse
 
 fun main() {
     val extra = MutableJsonObject(
@@ -33,11 +28,11 @@ fun main() {
 
     val arr = JsonArray(listOf(JsonString("Paulo"), extra))
     val arr1 = JsonArray(listOf(JsonString("Paulo"), extra1))
-    println(arr1.filter(
-        valuePredicate = { it -> it.data == "PA" },
-        keyPredicate = {key -> key == "unidade curricular"}
+    println(arr.filter(
+        valuePredicate = { it -> it.data == "Paulo" },
+        keyPredicate = {key -> key == "Alunos"}
     ).toJsonString())
-    println(arr1.toJsonString())
+    println(arr.toJsonString())
     println(obj1.map(
         valueAction = {it -> JsonString(it.data.toString())},
     ).toJsonString())
