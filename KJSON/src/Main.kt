@@ -18,6 +18,11 @@ fun main() {
             "Dias" to JsonArray(listOf(JsonNumber(3), JsonNumber(6), JsonNumber(8)))
         )
     )
+    val extra2 = MutableJsonObject(
+        mutableMapOf(
+            "" to JsonString("2"),
+        )
+    )
     val obj1 = MutableJsonObject(
         mutableMapOf(
             "unidade curricular" to JsonString("PA"),
@@ -25,6 +30,13 @@ fun main() {
             "Dias" to JsonArray(listOf(JsonNumber(4), JsonNumber(7), JsonNumber(9))),
             "BEJING" to extra
         ))
+
+    val obj2 = MutableJsonObject(
+        mutableMapOf(
+            "" to JsonString("1"),
+            "1" to extra2
+        ))
+
 
     val arr = JsonArray(listOf(JsonString("Paulo"), extra))
     val arr1 = JsonArray(listOf(JsonString("Paulo"), extra1))
@@ -36,4 +48,5 @@ fun main() {
     println(obj1.map(
         valueAction = {it -> JsonString(it.data.toString())},
     ).toJsonString())
+    println(obj2.isValid())
 }

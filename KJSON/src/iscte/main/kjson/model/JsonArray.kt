@@ -3,6 +3,7 @@ package iscte.main.kjson.model
 import iscte.main.kjson.visitor.VisitorAllSameType
 import iscte.main.kjson.visitor.VisitorFilterArray
 import iscte.main.kjson.visitor.VisitorMapArray
+import iscte.main.kjson.visitor.VisitorValidArray
 
 abstract class JsonArrayBase(
     val list: List<JsonValue> = listOf<JsonValue>()
@@ -19,6 +20,12 @@ abstract class JsonArrayBase(
 
     fun isAllSameType(): Boolean {
         val visitor = VisitorAllSameType()
+        this.accept(visitor)
+        return visitor.isValid()
+    }
+
+    fun isValid(): Boolean {
+        val visitor = VisitorValidArray()
         this.accept(visitor)
         return visitor.isValid()
     }

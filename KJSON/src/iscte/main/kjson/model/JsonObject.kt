@@ -41,7 +41,7 @@ abstract class JsonObjectBase(
         return visitor.isValid()
     }
 
-    fun isValidObject(): Boolean {
+    fun isValid(): Boolean {
         val visitor = VisitorValidObject()
         this.accept(visitor)
         return visitor.isValid()
