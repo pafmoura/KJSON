@@ -29,16 +29,31 @@ class VisitorValidObject : JsonVisitor {
     override fun visit(entry: Map.Entry<String, JsonValue>): Boolean {
         val value = entry.value
         isValid = when (value) {
-            is JsonArrayBase -> isValid && value.isValid()
+            is JsonArrayBase ->{
 
-            is JsonObjectBase -> isValid && value.isValid()
+               val ass = keys.add(entry.key) && isValid && value.isValid()
+                ass
+            }
 
-            else -> isValid && keys.add(entry.key)
+            is JsonObjectBase -> {
+                val asss = keys.add(entry.key) && isValid && value.isValid()
+                asss
+            }
+
+            else ->{
+                val kadd = keys.add(entry.key)
+                println(" ${Integer.toHexString(System.identityHashCode(keys))} | ${kadd} - ${entry}")
+                val ass = isValid && keys.add(entry.key)
+                ass
+            }
         }
         return false
     }
 
     override fun visit(array: JsonArrayBase): Boolean = true
+
+
+
 
     fun isValid(): Boolean = isValid
 }

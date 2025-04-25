@@ -21,6 +21,7 @@ fun main() {
     val extra2 = MutableJsonObject(
         mutableMapOf(
             "" to JsonString("2"),
+            "4" to JsonString("2"),
         )
     )
     val obj1 = MutableJsonObject(
@@ -34,12 +35,15 @@ fun main() {
     val obj2 = MutableJsonObject(
         mutableMapOf(
             "" to JsonString("1"),
-            "1" to extra2
-        ))
+            "4" to JsonString("2"),
+            "1" to extra2,
+
+            ))
 
 
     val arr = JsonArray(listOf(JsonString("Paulo"), extra))
     val arr1 = JsonArray(listOf(JsonString("Paulo"), extra1))
+    /*
     println(arr.filter(
         valuePredicate = { it -> it.data == "Paulo" },
         keyPredicate = {key -> key == "Alunos"}
@@ -48,5 +52,9 @@ fun main() {
     println(obj1.map(
         valueAction = {it -> JsonString(it.data.toString())},
     ).toJsonString())
-    println(obj2.isValid())
+
+    */
+
+    print(obj2.toJsonString())
+
 }
