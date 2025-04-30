@@ -64,6 +64,10 @@ abstract class JsonObjectBase(
         return properties[key]
     }
 
+    fun isNotEmpty(): Boolean {
+        return properties.isNotEmpty()
+    }
+
 }
 
 class MutableJsonObject(
