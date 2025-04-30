@@ -6,13 +6,13 @@ import iscte.main.kjson.visitor.VisitorMapObject
 import iscte.main.kjson.visitor.VisitorValidObject
 
 abstract class JsonObjectBase(
-    val properties: Map<String, JsonValue> = mapOf()
-) : JsonValue, Map<String, JsonValue> {
+    protected open val properties: Map<String, JsonValue> = mapOf()
+) : JsonValue {
 
     override val data: Map<String, JsonValue> get() = properties
 
     override fun toJsonString(): String {
-        return entries.joinToString(
+        return properties.entries.joinToString(
             separator = ", ", prefix = "{", postfix = "}"
         ) { "\"${it.key}\": ${it.value.toJsonString()}" }
     }
@@ -26,6 +26,13 @@ abstract class JsonObjectBase(
         return visitor.getResult()
     }
 
+    open fun filter(
+        valuePredicate: (JsonValue) -> Boolean
+    ): JsonObjectBase {
+        return filter(valuePredicate) { key -> true }
+
+    }
+
     open fun map(
         valueAction: (JsonValue) -> JsonValue,
         keyAction: (String) -> String
@@ -33,6 +40,12 @@ abstract class JsonObjectBase(
         val visitor = VisitorMapObject(valueAction, keyAction)
         accept(visitor)
         return visitor.getResult()
+    }
+
+    open fun map(
+        valueAction: (JsonValue) -> JsonValue
+    ): JsonObjectBase {
+        return map(valueAction) { key -> key }
     }
 
     fun isAllSameType(): Boolean {
@@ -46,11 +59,16 @@ abstract class JsonObjectBase(
         this.accept(visitor)
         return visitor.isValid()
     }
+
+    fun get(key: String): JsonValue? {
+        return properties[key]
+    }
+
 }
 
 class MutableJsonObject(
-    properties: MutableMap<String, JsonValue> = mutableMapOf()
-) : MutableMap<String, JsonValue> by properties, JsonObjectBase(properties) {
+    override val properties: MutableMap<String, JsonValue> = mutableMapOf()
+) : JsonObjectBase(properties) {
 
     override fun filter(
         valuePredicate: (JsonValue) -> Boolean,
@@ -59,10 +77,10 @@ class MutableJsonObject(
         return super.filter(valuePredicate, keyPredicate) as MutableJsonObject
     }
 
-    fun filter(
+    override fun filter(
         valuePredicate: (JsonValue) -> Boolean
     ): MutableJsonObject {
-        return super.filter(valuePredicate) { key -> true } as MutableJsonObject
+        return super.filter(valuePredicate) as MutableJsonObject
     }
 
     override fun map(
@@ -72,16 +90,39 @@ class MutableJsonObject(
         return super.map(valueAction, keyAction) as MutableJsonObject
     }
 
-    fun map(
+    override fun map(
         valueAction: (JsonValue) -> JsonValue
     ): MutableJsonObject {
-        return super.map(valueAction){key -> key} as MutableJsonObject
+        return super.map(valueAction) as MutableJsonObject
     }
+
+
+    fun put(key: String, value: JsonValue): JsonValue? {
+        return properties.put(key, value)
+    }
+
+    fun remove(key: String): JsonValue? {
+        return properties.remove(key)
+    }
+
+    fun clear() {
+        properties.clear()
+    }
+
+    fun isEmpty(): Boolean {
+        return properties.isEmpty()
+    }
+
+    fun numberOfProperties(): Int {
+        return properties.size
+    }
+
+
 }
 
 class JsonObject(
-    properties: Map<String, JsonValue> = mapOf()
-) : Map<String, JsonValue> by properties, JsonObjectBase(properties) {
+    override val properties: Map<String, JsonValue> = mapOf()
+) : JsonObjectBase(properties) {
 
     override fun filter(
         valuePredicate: (JsonValue) -> Boolean,
@@ -90,10 +131,10 @@ class JsonObject(
         return super.filter(valuePredicate, keyPredicate) as JsonObject
     }
 
-    fun filter(
+    override fun filter(
         valuePredicate: (JsonValue) -> Boolean
     ): JsonObject {
-        return super.filter(valuePredicate) { key -> true } as JsonObject
+        return super.filter(valuePredicate) as JsonObject
     }
 
     override fun map(
@@ -103,9 +144,11 @@ class JsonObject(
         return super.map(valueAction, keyAction) as JsonObject
     }
 
-    fun map(
+    override fun map(
         valueAction: (JsonValue) -> JsonValue
     ): JsonObject {
-        return super.map(valueAction){key -> key} as JsonObject
+        return super.map(valueAction) as JsonObject
     }
+
+
 }

@@ -77,7 +77,7 @@ class JsonArray(
     fun map(
         valueAction: (JsonValue) -> JsonValue
     ): JsonArray {
-        return super.map(valueAction){key -> key} as JsonArray
+        return super.map(valueAction) { key -> key } as JsonArray
     }
 
     operator fun plus(other: JsonArray): JsonArray {
@@ -91,14 +91,7 @@ class JsonArray(
         return JsonArray(this.data.subList(fromIndex, toIndex))
     }
 
-    override fun equals(other: Any?): Boolean {
-        require(other is JsonArray || other is MutableJsonArray)
-        return data == other.data
-    }
 
-    override fun hashCode(): Int {
-        return data.hashCode()
-    }
 }
 
 class MutableJsonArray(
@@ -128,20 +121,13 @@ class MutableJsonArray(
     fun map(
         valueAction: (JsonValue) -> JsonValue
     ): MutableJsonArray {
-        return super.map(valueAction){key -> key} as MutableJsonArray
+        return super.map(valueAction) { key -> key } as MutableJsonArray
     }
 
     operator fun plus(other: MutableJsonArray): MutableJsonArray {
         return MutableJsonArray((list + other.list).toMutableList())
     }
 
-    override fun equals(other: Any?): Boolean {
-        require(other is JsonArray || other is MutableJsonArray)
-        return data == other.data
-    }
 
-    override fun hashCode(): Int {
-        return data.hashCode()
-    }
 }
 
