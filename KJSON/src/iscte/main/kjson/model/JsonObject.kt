@@ -68,6 +68,14 @@ abstract class JsonObjectBase(
         return properties.isNotEmpty()
     }
 
+    override fun equals(other: Any?): Boolean {
+        require(other is JsonObjectBase)
+        return this.properties == other.properties
+    }
+
+    override fun hashCode(): Int {
+        return properties.hashCode()
+    }
 }
 
 class MutableJsonObject(

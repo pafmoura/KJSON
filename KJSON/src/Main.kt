@@ -2,7 +2,9 @@ import iscte.main.kjson.model.JsonArray
 import iscte.main.kjson.model.JsonNumber
 import iscte.main.kjson.model.JsonString
 import iscte.main.kjson.model.MutableJsonObject
+import iscte.main.kjson.utils.JsonReflection
 
+/*
 fun main() {
     val extra = MutableJsonObject(
         mutableMapOf(
@@ -61,5 +63,49 @@ fun main() {
 
 
     print(obj2.toJsonString())
+
+
+
+
+
+
+}
+
+*/
+
+data class Course(
+    val name: String,
+    val credits: Int,
+    val evaluation: List<EvalItem>
+)
+
+
+data class EvalItem(
+    val name: String,
+    val percentage: Double,
+    val mandatory: Boolean,
+    val type: EvalType?
+) {
+
+}
+
+
+enum class EvalType {
+    TEST, PROJECT, EXAM
+}
+
+
+fun main() {
+
+    val course = Course(
+        "PA", 6, listOf(
+            EvalItem("quizzes", .2, false, null),
+            EvalItem("project", .8, true, EvalType.PROJECT)
+        )
+    )
+
+
+    val jr = JsonReflection()
+    print(jr.toJsonValue(listOf(course, course)).toJsonString())
 
 }

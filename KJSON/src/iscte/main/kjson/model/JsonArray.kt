@@ -47,6 +47,15 @@ abstract class JsonArrayBase(
         accept(visitor)
         return visitor.getResult()
     }
+
+    override fun equals(other: Any?): Boolean {
+        require(other is JsonArrayBase)
+        return this.data == other.data
+    }
+
+    override fun hashCode(): Int {
+        return this.data.hashCode()
+    }
 }
 
 
