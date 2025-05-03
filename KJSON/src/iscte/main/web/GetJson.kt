@@ -7,6 +7,7 @@ import okhttp3.mockwebserver.RecordedRequest
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.KParameter
+import kotlin.reflect.KType
 import kotlin.reflect.full.createInstance
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.instanceParameter
@@ -35,14 +36,28 @@ class GetJson(vararg val args: KClass<*>) {
 
         server.dispatcher = object : okhttp3.mockwebserver.Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
-
                 var kFunction : KFunction<*>? = null
                 var pathParams = mapOf<String, Any>()
+
                 pathing.entries.forEach {
                     val pattern = Regex(it.key)
-                    val match = pattern.matchEntire(request.path.toString())
-                    println(pattern)
-                    println(request.path.toString())
+                    var requestedURL = request.path.toString()
+
+                    if (requestedURL.contains("?") && it.key.contains("?")){
+                        val (requestRoot, params) = request.path.toString().split("?")
+                        val requestParams = params.split("&")
+                        val keyParams = it.key.split("?", limit = 2)[1].split("&")
+
+                        var newParams = keyParams.joinToString(separator = "&") {
+                                keyParam ->
+                            requestParams.find{ requestParam ->
+                                requestParam.contains(keyParam.split("=")[0])
+                            }.toString()
+                        }
+                        requestedURL = "$requestRoot?$newParams"
+                    }
+
+                    val match = pattern.matchEntire(requestedURL)
                     if (match != null) {
                         kFunction = pathing[it.key]
                         val groupNames : List<String?> = kFunction?.parameters?.mapNotNull { it.name } ?: emptyList()
@@ -51,7 +66,6 @@ class GetJson(vararg val args: KClass<*>) {
                         } as Map<String, Any>
                     }
                 }
-
                 if (kFunction == null)
                     return MockResponse().setResponseCode(404).setBody("Page Not Found")
 
@@ -86,12 +100,23 @@ class GetJson(vararg val args: KClass<*>) {
 
             var path = "${rootPath}/${mapping.path}"
 
-            it.parameters.forEach { p ->
-                val pathAnn = p.findAnnotation<Path>()
+            val argsPaths = it.parameters.filter { it.findAnnotation<Path>() != null }
+            val argsParams = it.parameters.filter { it.findAnnotation<Param>() != null }
+
+            argsPaths.forEach { p ->
                 val paramName = p.name
-                if (pathAnn != null && mapping.path.contains("/{${paramName}}") == true)
+                if (mapping.path.contains("/{${paramName}}") == true)
                     path = path.replace("/{${paramName}}", "/(?<${paramName}>[^/]+)")
             }
+
+            val query = argsParams.takeIf { it.isNotEmpty() }
+                ?.joinToString(separator = "&", prefix = "\\?"){
+                    "${it.name}=(?<${it.name}>[^/]+)"
+                }
+                ?: ""
+
+            path += query
+
             pathing.put(path, it)
         }
     }
@@ -103,10 +128,19 @@ class GetJson(vararg val args: KClass<*>) {
         kfunction.parameters.forEach { param ->
             when (param.kind) {
                 KParameter.Kind.INSTANCE -> callArgs[param] = instance
-                KParameter.Kind.VALUE -> callArgs[param] = args[param.name]
+                KParameter.Kind.VALUE -> callArgs[param] = convert(args[param.name].toString(), param.type)
                 else -> {}
             }
         }
         return kfunction.callBy(callArgs)
+    }
+
+    private fun convert(value: String, type: KType): Any = when (type.classifier) {
+        Int::class -> value.toInt()
+        Long::class -> value.toLong()
+        Double::class -> value.toDouble()
+        Boolean::class -> value.toBooleanStrictOrNull() ?: false
+        String::class -> value
+        else -> throw IllegalArgumentException("Unsupported type: $type")
     }
 }
