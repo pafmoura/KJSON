@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Test
 
 class JsonReflectionTests {
 
-    val reflect = JsonReflection()
-
     data class Course(
         val name: String,
         val credits: Int,
@@ -70,7 +68,7 @@ class JsonReflectionTests {
     fun testProjectStatementCase() {
         val expected =
             "{\"name\": \"PA\", \"credits\": 6, \"evaluation\": [{\"name\": \"quizzes\", \"percentage\": 0.2, \"mandatory\": false, \"type\": null}, {\"name\": \"project\", \"percentage\": 0.8, \"mandatory\": true, \"type\": \"PROJECT\"}]}"
-        assertEquals(expected, reflect.toJsonValue(course).toJsonString())
+        assertEquals(expected, JsonReflection.toJsonValue(course).toJsonString())
 
     }
 
@@ -85,7 +83,7 @@ class JsonReflectionTests {
         )
 
 
-        assertEquals(expectedObj, reflect.toJsonValue(list))
+        assertEquals(expectedObj, JsonReflection.toJsonValue(list))
     }
 
     @Test
@@ -101,7 +99,7 @@ class JsonReflectionTests {
                 "course2" to courseJson
             )
         )
-        assertEquals(expectedObj, reflect.toJsonValue(map))
+        assertEquals(expectedObj, JsonReflection.toJsonValue(map))
     }
 
 }

@@ -6,7 +6,7 @@ import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
 
 
-class JsonReflection {
+object JsonReflection {
     fun toJsonValue(value: Any?): JsonValue {
         return when (value) {
             null -> JsonNull

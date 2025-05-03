@@ -104,8 +104,6 @@ fun main() {
         )
     )
 
-
-    val jr = JsonReflection()
-    print(jr.toJsonValue(listOf(course, course)).toJsonString())
+    print(JsonReflection.toJsonValue(listOf(course, course)).toJsonString())
 
 }
