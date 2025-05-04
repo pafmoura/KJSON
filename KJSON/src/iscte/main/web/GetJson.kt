@@ -70,6 +70,14 @@ class GetJson(vararg val args: KClass<*>) {
                     return MockResponse().setResponseCode(404).setBody("Page Not Found")
 
                 val clazz = kFunction.instanceParameter?.type?.classifier as? KClass<*>
+
+                if(kFunction == ::welcome){
+                    return MockResponse()
+                            .setResponseCode(200)
+                            .setHeader("Content-Type", "text/html")
+                            .setBody(execute(pathParams, kFunction, null) as String)
+
+                }
                 return MockResponse().setResponseCode(200).setBody(
                         JsonReflection.toJsonValue(execute(pathParams ,kFunction, clazz?.createInstance())).toJsonString()
                 )
@@ -78,7 +86,14 @@ class GetJson(vararg val args: KClass<*>) {
     }
 
     fun welcome(): String {
-        return "Welcome to PA"
+        val paths = pathing.keys
+            .filter { it != "/" }
+            .sorted()
+            .map { path ->
+                path.replace(Regex("\\([^)]*\\)"), "{INPUT}")
+                    .replace(Regex("\\\\"), "") 
+            }
+        return getWelcomePageHtml(paths)
     }
 
     fun start(port: Int = DEFAULT_PORT) {
