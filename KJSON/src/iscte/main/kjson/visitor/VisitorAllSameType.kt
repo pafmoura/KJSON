@@ -23,6 +23,8 @@ class VisitorAllSameType : JsonVisitor {
         return false
     }
 
+    //Para correr deep ou first level...?
+    /*
     override fun visit(obj: JsonObjectBase): Boolean {
         if (firstElementClass == null)
             firstElementClass = obj::class
@@ -30,7 +32,7 @@ class VisitorAllSameType : JsonVisitor {
         isValid = isValid && obj::class == firstElementClass
         return false
     }
-
+    //Para correr deep ou first level...?
     override fun visit(array: JsonArrayBase): Boolean {
         if (firstElementClass == null)
             firstElementClass = array::class
@@ -38,7 +40,7 @@ class VisitorAllSameType : JsonVisitor {
         isValid = isValid && array::class == firstElementClass
         return false
     }
-
+*/
     fun isValid() = isValid
 }
 

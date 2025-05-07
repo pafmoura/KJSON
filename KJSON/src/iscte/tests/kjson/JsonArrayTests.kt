@@ -1,318 +1,226 @@
-//package iscte.tests.kjson
-//
-//import iscte.main.kjson.model.*
-//import org.junit.jupiter.api.Test
-//import org.junit.jupiter.api.Assertions.*
-//import javax.swing.DefaultListSelectionModel
-//import kotlin.reflect.KClass
-//
-//class JsonArrayTests {
-//
-//    fun getCadeiraJson(): JsonObject {
-//        return JsonObject(
-//            mapOf(
-//                "nota" to JsonNumber(20),
-//                "unidade curricular" to JsonString("PA"),
-//                "aprovado" to JsonBoolean(true),
-//                "data de entrega" to JsonNull,
-//                "professor" to JsonObject(
-//                    mapOf(
-//                        "nome" to JsonString("André"),
-//                        "idade" to JsonNull,
-//                        "homem" to JsonBoolean(true),
-//                        "gabinete" to JsonString("D6.23")
-//                    )
-//                )
-//            )
-//        )
-//    }
-//
-//    fun getCadeiraJson1(): JsonObject {
-//        return JsonObject(
-//            mutableMapOf(
-//                "" to JsonString("PA"),
-//                "nota" to JsonString("PA"),
-//                "aprovado" to JsonString("PA"),
-//            )
-//        )
-//    }
-//
-//    @Test
-//    fun testAllSameType() {
-//        val jsonArray = JsonArray(
-//            listOf(
-//                JsonString("Hello"),
-//                JsonString("World"),
-//                JsonString("!")
-//            )
-//        )
-//        val visitor = VisitorAllSameType()
-//        jsonArray.accept(visitor)
-//        assertTrue(visitor.isValid())
-//
-//        assertTrue(jsonArray.isAllSameType())
-//
-//        val jsonArray1 = JsonArray(
-//            listOf(
-//                JsonString("Hello"),
-//                JsonNumber(1),
-//                JsonBoolean(false)
-//            )
-//        )
-//        assertFalse(jsonArray1.isAllSameType())
-//
-//        val visitor1 = VisitorAllSameType()
-//        jsonArray1.accept(visitor1)
-//        assertFalse(visitor1.isValid())
-//
-//        val jsonArray2 = JsonArray(
-//            listOf(
-//                JsonString("Hello"),
-//                getCadeiraJson(),
-//                JsonString("World")
-//            )
-//        )
-//
-//        assertFalse(jsonArray2.isAllSameType())
-//
-//        val visitor2 = VisitorAllSameType()
-//        jsonArray2.accept(visitor2)
-//        assertFalse(visitor2.isValid())
-//
-//        val jsonArray3 = JsonArray(
-//            listOf(
-//                getCadeiraJson1(),
-//                getCadeiraJson1(),
-//                getCadeiraJson1()
-//            )
-//        )
-//
-//        assertTrue(jsonArray3.isAllSameType())
-//
-//        val visitor3 = VisitorAllSameType()
-//        jsonArray3.accept(visitor3)
-//        assertTrue(visitor3.isValid())
-//
-//        val jsonArray4 = JsonArray(
-//            listOf(
-//                getCadeiraJson1(),
-//                JsonNull,
-//                getCadeiraJson1()
-//            )
-//        )
-//
-//        assertFalse(jsonArray4.isAllSameType())
-//
-//        val visitor4 = VisitorAllSameType()
-//        jsonArray4.accept(visitor4)
-//        assertFalse(visitor4.isValid())
-//
-//        val jsonArray5 = JsonArray(
-//            listOf(
-//                JsonNull,
-//                JsonNull,
-//                JsonNull
-//            )
-//        )
-//
-//        assertFalse(jsonArray5.isAllSameType())
-//
-//        val visitor5 = VisitorAllSameType()
-//        jsonArray5.accept(visitor5)
-//        assertFalse(visitor5.isValid())
-//    }
-//
-//
-//    @Test
-//    fun testJoinJsonArrays() {
-//        val jsonArray1 = JsonArray(listOf(JsonNumber(1), JsonNumber(2), JsonNumber(3)))
-//        val jsonArray2 = JsonArray(listOf(JsonNumber(4), JsonNumber(5), JsonNumber(6)))
-//        jsonArray2.forEach { }
-//        val expectedSum =
-//            JsonArray(listOf(JsonNumber(1), JsonNumber(2), JsonNumber(3), JsonNumber(4), JsonNumber(5), JsonNumber(6)))
-//        val result = jsonArray1 + jsonArray2
-//        assertEquals(expectedSum.toJsonString(), result.toJsonString())
-//    }
-//
-//    @Test
-//    fun testAddToJsonArrays() {
-//        val jsonArray1 = MutableJsonArray(mutableListOf(JsonNumber(1), JsonNumber(2), JsonNumber(3)))
-//        assertTrue { jsonArray1.isAllSameType() }
-//        jsonArray1.add(JsonString("teste"))
-//        assertFalse { jsonArray1.isAllSameType() }
-//    }
-//
-//    @Test
-//    fun testCustomVisitor() {
-//        val cadeiraJson = JsonArray(listOf(JsonNumber(1), JsonNumber(2), JsonNumber(3)))
-//        var firstElementClass: KClass<out JsonValue>? = null
-//        var isValid = true
-//
-//        cadeiraJson.accept { element ->
-//            if (firstElementClass == null)
-//                firstElementClass = element::class
-//
-//            isValid = isValid && element::class == firstElementClass && element !is JsonNull
-//        }
-//
-//        assertTrue(isValid)
-//
-//        val validJson = JsonArray(listOf(JsonString("1"), JsonNumber(2), JsonNumber(3)))
-//
-//        firstElementClass = null
-//        isValid = true
-//        validJson.accept { element ->
-//            if (firstElementClass == null)
-//                firstElementClass = element::class
-//
-//            isValid = isValid && element::class == firstElementClass && element !is JsonNull
-//        }
-//
-//        assertFalse(isValid)
-//    }
-//
-//    @Test
-//    fun testSublist() {
-//        var originalArray = JsonArray(listOf(JsonNumber(1), JsonNumber(2), JsonNumber(3)))
-//        var newArray = originalArray.subList(1, 3)
-//        assertEquals(JsonArray(listOf(JsonNumber(2), JsonNumber(3))).toJsonString(), newArray.toJsonString())
-//    }
-//
-//    @Test
-//    fun testArrayEquals() {
-//        var originalArray = JsonArray(listOf(JsonNumber(1), JsonNumber(2), JsonNumber(3)))
-//        var newArray = originalArray.subList(1, 3)
-//        assertTrue(JsonArray(listOf(JsonNumber(2), JsonNumber(3))).equals(newArray))
-//    }
-//
-//    @Test
-//    fun testMapArray() {
-//        var arr = JsonArray(listOf(JsonNumber(1), JsonNumber(2), JsonNumber(3)))
-//        var newArr = arr.map({ x -> x as JsonNumber + JsonNumber(1) })
-//        assertEquals(JsonArray(listOf(JsonNumber(2), JsonNumber(3), JsonNumber(4))), newArr)
-//
-//        var arr1 = JsonArray(listOf(JsonNumber(1), JsonNumber(2), JsonNumber(3)))
-//        var newArr1 = arr1.map { x ->
-//            when (x) {
-//                is JsonNumber -> x + JsonNumber(1)
-//                else -> x
-//            }
-//        }
-//
-//        assertEquals(JsonArray(listOf(JsonNumber(2), JsonNumber(3), JsonNumber(4))), newArr1)
-//
-//
-//        var arr2 =
-//            JsonArray(
-//                listOf(
-//                    JsonNumber(1),
-//                    JsonNumber(2),
-//                    JsonArray(listOf(JsonNumber(1), JsonNumber(2), JsonNumber(3)))
-//                )
-//            )
-//        var newArr2 = arr2.map { x ->
-//            when (x) {
-//                is JsonNumber -> x + JsonNumber(1)
-//                else -> x
-//            }
-//
-//        }
-//        assertEquals(
-//            JsonArray(
-//                listOf(
-//                    JsonNumber(2),
-//                    JsonNumber(3),
-//                    JsonArray(listOf(JsonNumber(2), JsonNumber(3), JsonNumber(4)))
-//                )
-//            ), newArr2
-//        )
-//
-//
-//
-//        var arr3 = JsonArray(
-//            listOf(
-//                JsonString("Lista de Alunos"),
-//                JsonObject(
-//                    mapOf(
-//                        "nome" to JsonString("Adérito"),
-//                        "unidade curricular" to JsonString("PA"),
-//                        "aprovado" to JsonString("Confirmado")
-//                    )
-//                )
-//            )
-//        )
-//
-//        var newArr3 = arr3.map(
-//            { x ->
-//                when (x) {
-//                    is JsonString -> JsonString("-${x.data}-")
-//                    else -> x
-//                }
-//            },
-//            keyAction = { y ->
-//                "---${y}---"
-//            }
-//
-//
-//        )
-//
-//        assertEquals(
-//            "[\"-Lista de Alunos-\", {\"---nome---\": \"-Adérito-\", \"---unidade curricular---\": \"-PA-\", \"---aprovado---\": \"-Confirmado-\"}]",
-//            newArr3.toJsonString()
-//        )
-//    }
-//
-//@Test
-//fun testFilterArray() {
-//    val jsonArray = JsonArray(
-//        listOf(
-//            MutableJsonObject(
-//                mutableMapOf(
-//                    "nome" to JsonString("Adérito"),
-//                    "unidade curricular" to JsonString("PA"),
-//                    "idade" to JsonNumber(23)
-//                )
-//            ),
-//            MutableJsonObject(
-//                mutableMapOf(
-//                    "nome" to JsonString("André"),
-//                    "unidade curricular" to JsonString("PA"),
-//                    "idade" to JsonNumber(26)
-//                )
-//            ),
-//            JsonArray(
-//                listOf(
-//                    JsonNumber(47),
-//                    JsonNumber(42),
-//                    JsonBoolean(true)
-//                )
-//
-//            )
-//    ))
-//    val filterByAge = jsonArray.filter(
-//        predicate = { v -> v is JsonNumber && v.data as Int > 25 },
-//      // keyPredicate = { k -> k == "idade" }
-//    )
-//    print(filterByAge.toJsonString())
-//
-//    var jarr2 = JsonArray(
-//        listOf(
-//            JsonNumber(47),
-//            JsonNumber(42),
-//            JsonNumber(12),
-//            JsonNumber(27)
-//        ))
-//
-//   // var filterOver25 = jarr2.filter(
-//     //   predicate = { v -> v is JsonNumber && v.data as Int > 25 })
-//
-//}
-//
-//}
-//
-//
-//
-//
-//
-//
-//
+import iscte.main.kjson.model.JsonArray
+import iscte.main.kjson.model.JsonNumber
+import iscte.main.kjson.model.JsonObject
+import iscte.main.kjson.model.JsonString
+import iscte.main.kjson.model.*
+import iscte.main.kjson.utils.JsonReflection
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
+
+class JsonArrayTests {
+
+    fun getJsonArray(): JsonArray {
+        return JsonArray(
+            listOf(
+                JsonString("Lista de Candidatos"),
+                JsonNumber(2025),
+                JsonObject(
+                    mapOf(
+                        "name" to JsonString("João"),
+                        "age" to JsonNumber(27),
+                        "city" to JsonString("Lisboa")
+                    )
+                ),
+                JsonObject(
+                    mapOf(
+                        "name" to JsonString("Maria"),
+                        "age" to JsonNumber(25),
+                        "city" to JsonString("Porto")
+                    )
+                ),
+
+                )
+        )
+
+    }
+
+    @Test
+    fun testArrayToString() {
+        val jsonArray = getJsonArray()
+        val expected = "[\"Lista de Candidatos\", " +
+                "2025, " +
+                "{\"name\": \"João\", \"age\": 27, \"city\": \"Lisboa\"}, " +
+                "{\"name\": \"Maria\", \"age\": 25, \"city\": \"Porto\"}]"
+        assertEquals(expected, jsonArray.toJsonString())
+    }
+
+    @Test
+    fun testArrayFilter() {
+        val jsonObj1 = MutableJsonObject(
+            mutableMapOf(
+                "unidade curricular" to JsonString("PA"),
+                "Alunos" to JsonArray(listOf(JsonString("Paulo"), JsonString("Filipe"))),
+                "Dias" to JsonArray(listOf(JsonNumber(2), JsonNumber(5), JsonNumber(7)))
+            )
+        )
+        val jsonObj2 = MutableJsonObject(
+            mutableMapOf(
+                "unidade curricular" to JsonString("PA"),
+                "Alunos" to JsonArray(listOf(JsonString("Pedro"), JsonString("Paulo"))),
+                "Dias" to JsonArray(listOf(JsonNumber(3), JsonNumber(6), JsonNumber(9)))
+            )
+        )
+        val arr = JsonArray(listOf(JsonString("Paulo"), jsonObj1, jsonObj2))
+
+        val result =
+            arr.filter(
+                valuePredicate = { it -> it.data == "Paulo" },
+                keyPredicate = { key -> key == "Alunos" }
+            ).toJsonString()
+
+        assertEquals("[\"Paulo\", {\"Alunos\": [\"Paulo\"]}, {\"Alunos\": [\"Paulo\"]}]", result)
+
+  
+    }
+
+    @Test
+    fun testArrayMap() {
+        val jsonObj1 = MutableJsonObject(
+            mutableMapOf(
+                "unidade curricular" to JsonString("PA"),
+                "Alunos" to JsonArray(listOf(JsonString("Paulo"), JsonString("Filipe"))),
+                "Dias" to JsonArray(listOf(JsonNumber(2), JsonNumber(5), JsonNumber(7)))
+            )
+        )
+        val jsonObj2 = MutableJsonObject(
+            mutableMapOf(
+                "unidade curricular" to JsonString("PA"),
+                "Alunos" to JsonArray(listOf(JsonString("Pedro"), JsonString("Paulo"))),
+                "Dias" to JsonArray(listOf(JsonNumber(3), JsonNumber(6), JsonNumber(9)))
+            )
+        )
+        val arr = JsonArray(listOf(JsonString("Paulo"), jsonObj1, jsonObj2))
+
+        val result =
+            arr.map(
+                valueAction = { it -> JsonString(it.data.toString()) },
+                keyAction = { it -> "-$it-" }
+            ).toJsonString()
+        assertEquals(
+            "[\"Paulo\", {\"-unidade curricular-\": \"PA\", \"-Alunos-\": [\"Paulo\", \"Filipe\"], \"-Dias-\": [\"2\", \"5\", \"7\"]}, {\"-unidade curricular-\": \"PA\", \"-Alunos-\": [\"Pedro\", \"Paulo\"], \"-Dias-\": [\"3\", \"6\", \"9\"]}]",
+            result
+        )
+
+    }
+
+    @Test
+    fun isAllSameType() {
+        val jsonArray = JsonArray(
+            listOf(
+                JsonNumber(10), JsonNumber(53), JsonString("Paulo")
+            )
+        )
+        assertFalse(jsonArray.isAllSameType())
+
+        val jsonArray2 = JsonArray(
+            listOf(
+                JsonNumber(10), JsonNumber(53), JsonNumber(20), JsonArray(
+                    listOf(JsonNumber(5), JsonNumber(7))
+                )
+            )
+        )
+        assertTrue(jsonArray2.isAllSameType())
+
+        val jsonArray3 = JsonArray(
+            listOf(
+                JsonObject(
+                    mapOf(
+                        "name" to JsonString("João"),
+                    )
+                ),
+                JsonObject(
+                    mapOf(
+                        "name" to JsonString("Maria"),
+                    )
+                )
+            )
+        )
+        assertTrue(jsonArray3.isAllSameType())
+
+    }
+
+    @Test
+    fun testIsEmpty() {
+        val jsonArray = JsonArray(listOf())
+        assertTrue(jsonArray.isEmpty())
+    }
+
+    @Test
+    fun testIsNotEmpty() {
+        val jsonArray = JsonArray(listOf(JsonString("test")))
+        assertTrue(jsonArray.isNotEmpty())
+    }
+
+    @Test
+    fun testGet() {
+        val jsonArray = JsonArray(listOf(JsonString("test"), JsonNumber(123)))
+        assertEquals(JsonString("test"), jsonArray.get(0))
+        assertEquals(JsonNumber(123), jsonArray.get(1))
+    }
+
+    @Test
+    fun testNumberOfProperties() {
+        val jsonArray = JsonArray(listOf(JsonString("test"), JsonNumber(123)))
+        assertEquals(2, jsonArray.numberOfProperties())
+    }
+
+    @Test
+    fun testSubList() {
+        val jsonArray = JsonArray(listOf(JsonString("test"), JsonNumber(123), JsonString("test2")))
+        val subList = jsonArray.subList(0, 2)
+        assertEquals(JsonArray(listOf(JsonString("test"), JsonNumber(123))), subList)
+    }
+
+    @Test
+    fun testPlus() {
+        val jsonArray1 = JsonArray(listOf(JsonString("test"), JsonNumber(123)))
+        val jsonArray2 = JsonArray(listOf(JsonString("test2"), JsonNumber(456)))
+        val result = jsonArray1 + jsonArray2
+        assertEquals(
+            JsonArray(listOf(JsonString("test"), JsonNumber(123), JsonString("test2"), JsonNumber(456))),
+            result
+        )
+    }
+
+    @Test
+    fun testEquals() {
+        val jsonArray1 = JsonArray(listOf(JsonString("test"), JsonNumber(123)))
+        val jsonArray2 = JsonArray(listOf(JsonString("test"), JsonNumber(123)))
+        assertTrue(jsonArray1 == jsonArray2)
+    }
+
+    @Test
+    fun testHashCode() {
+        val jsonArray = JsonArray(listOf(JsonString("test"), JsonNumber(123)))
+        assertEquals(jsonArray.hashCode(), jsonArray.hashCode())
+    }
+
+    @Test
+    fun testAdd() {
+        val jsonArray = MutableJsonArray(mutableListOf(JsonString("paulo")))
+        jsonArray.add(JsonString("filipe"))
+        assertEquals(JsonArray(listOf(JsonString("paulo"), JsonString("filipe"))), jsonArray)
+    }
+
+    @Test
+    fun testRemoveAt() {
+        val jsonArray = MutableJsonArray(mutableListOf(JsonString("paulo"), JsonString("filipe")))
+        jsonArray.removeAt(0)
+        assertEquals(JsonArray(listOf(JsonString("filipe"))), jsonArray)
+    }
+
+    @Test
+    fun clear() {
+        val jsonArray = MutableJsonArray(mutableListOf(JsonString("paulo"), JsonString("filipe")))
+        jsonArray.clear()
+        assertEquals(JsonArray(listOf()), jsonArray)
+    }
+
+
+}
+
+
+

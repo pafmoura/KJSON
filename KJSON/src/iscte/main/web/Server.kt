@@ -27,11 +27,7 @@ class Controller {
 
 
 fun main() {
-//    val c = Controller()
-//    println(c.args(text = "OLA", n = 1))
     val app = GetJson(Controller::class)
     app.start()
-////
-//    val pat = Regex("/api/args\\?n=(?<n>[^/]+)&text=(?<text>[^/]+)")
-//    println(pat.matchEntire("/api/args?n=3&text=PA"))
+
 }
