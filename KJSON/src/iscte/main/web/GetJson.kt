@@ -75,13 +75,24 @@ class GetJson(vararg val args: KClass<*>) {
     fun transformURL(request: RecordedRequest, path: String): String {
         val (requestRoot, params) = request.path.toString().split("?")
         val requestParams = params.split("&")
+        val mapParams = mutableMapOf<String,String>()
+        requestParams.forEach { param ->
+            val (key, value) = param.split("=")
+            mapParams[key] = value
+        }
+
         val keyParams = path.split("?", limit = 2)[1].split("&")
 
-        var newParams = keyParams.joinToString(separator = "&") { keyParam ->
-            requestParams.find { requestParam ->
-                requestParam.contains(keyParam.split("=")[0])
-            }.toString()
-        }
+
+
+        val newParams = mapParams.keys
+            .filter { key -> keyParams.any { it.contains(key) } }
+            .joinToString("&") { key ->
+                val value = mapParams[key]
+                "$key=$value"
+            }
+
+        println(newParams)
         return "$requestRoot?$newParams"
     }
 
