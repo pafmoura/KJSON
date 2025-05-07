@@ -26,7 +26,7 @@ interface JsonValue {
                 if (visitor.visit(this)) {
                     return
                 }
-                this.forEach { value ->
+                this.data.forEach { value ->
                     value.accept(visitor)
                 }
             }

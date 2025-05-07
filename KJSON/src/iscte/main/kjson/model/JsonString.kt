@@ -1,16 +1,8 @@
 package iscte.main.kjson.model
 
 data class JsonString(override val data: String) : JsonValue {
+
     override fun toJsonString(): String = "\"$data\""
-
-    override fun equals(other: Any?): Boolean {
-        require(other is JsonString)
-        return this.data == other.data
-    }
-
-    override fun hashCode(): Int {
-        return this.data.hashCode()
-    }
 
     operator fun plus(other: JsonString): JsonString {
         return JsonString(this.data + other.data)

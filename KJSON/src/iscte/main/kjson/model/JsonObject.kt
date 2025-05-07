@@ -3,7 +3,6 @@ package iscte.main.kjson.model
 import iscte.main.kjson.visitor.VisitorAllSameType
 import iscte.main.kjson.visitor.VisitorFilterObject
 import iscte.main.kjson.visitor.VisitorMapObject
-import iscte.main.kjson.visitor.VisitorValidObject
 
 abstract class JsonObjectBase(
     protected open val properties: Map<String, JsonValue> = mapOf()
@@ -54,18 +53,20 @@ abstract class JsonObjectBase(
         return visitor.isValid()
     }
 
-    fun isValid(): Boolean {
-        val visitor = VisitorValidObject()
-        this.accept(visitor)
-        return visitor.isValid()
-    }
-
     fun get(key: String): JsonValue? {
         return properties[key]
     }
 
     fun isNotEmpty(): Boolean {
         return properties.isNotEmpty()
+    }
+
+    fun isEmpty(): Boolean {
+        return properties.isEmpty()
+    }
+
+    fun numberOfProperties(): Int {
+        return properties.size
     }
 
     override fun equals(other: Any?): Boolean {
@@ -108,7 +109,6 @@ class MutableJsonObject(
         return super.map(valueAction) as MutableJsonObject
     }
 
-
     fun put(key: String, value: JsonValue): JsonValue? {
         return properties.put(key, value)
     }
@@ -120,16 +120,6 @@ class MutableJsonObject(
     fun clear() {
         properties.clear()
     }
-
-    fun isEmpty(): Boolean {
-        return properties.isEmpty()
-    }
-
-    fun numberOfProperties(): Int {
-        return properties.size
-    }
-
-
 }
 
 class JsonObject(
@@ -161,6 +151,4 @@ class JsonObject(
     ): JsonObject {
         return super.map(valueAction) as JsonObject
     }
-
-
 }
