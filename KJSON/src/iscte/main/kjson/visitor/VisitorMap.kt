@@ -26,6 +26,7 @@ class VisitorMapObject(
                 val newKey = keyAction(key)
                 if (array.isNotEmpty()) {
                     newMap.put(newKey, array)
+                    return false
                 }
             }
 
@@ -34,6 +35,7 @@ class VisitorMapObject(
                 val newKey = keyAction(key)
                 if (obj.isNotEmpty()) {
                     newMap.put(newKey, obj)
+                    return true
                 }
             }
 
@@ -87,8 +89,18 @@ class VisitorMapArray(
 
 
     override fun visit(array: JsonArrayBase): Boolean {
-        firstJsonArrayBase = firstJsonArrayBase ?: array
-        return false
+        if (firstJsonArrayBase == null){
+            firstJsonArrayBase = array
+            return false
+        }
+
+        val filteredArray = array.map(valueAction, keyAction)
+
+        if (filteredArray.isNotEmpty()) {
+            mapList.add(filteredArray)
+        }
+
+        return true
     }
 
     fun getResult(): JsonArrayBase {

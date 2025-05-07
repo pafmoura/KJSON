@@ -74,6 +74,20 @@ class JsonObjectTests {
 
         assertEquals("{\"Alunos\": [\"Paulo\"]}", result)
 
+        val obj1 = JsonObject(
+            mapOf(
+                "Professor" to JsonString("Raimundo"),
+                "extra" to obj,
+            )
+        )
+
+        val result1 = obj1.filter(
+            valuePredicate = { it -> it.data == "Paulo" },
+            keyPredicate = { key -> key == "Alunos" }
+        ).toJsonString()
+
+        assertEquals("{\"extra\": {\"Alunos\": [\"Paulo\"]}}", result1)
+
     }
 
     @Test
@@ -95,6 +109,20 @@ class JsonObjectTests {
             "{\"-Professor-\": \"Paulo\", \"-Alunos-\": [\"Paulo\", \"Filipe\"], \"-Dias-\": [\"2\", \"5\", \"7\"]}",
             result
         )
+
+        val obj1 = JsonObject(
+            mapOf(
+                "Professor" to JsonString("Raimundo"),
+                "extra" to obj,
+            )
+        )
+
+        val result1 = obj1.map(
+            valueAction = { it ->  JsonString(it.data.toString()) },
+            keyAction = { it -> "-$it-" }
+        ).toJsonString()
+
+        assertEquals("{\"-Professor-\": \"Raimundo\", \"-extra-\": {\"-Professor-\": \"Paulo\", \"-Alunos-\": [\"Paulo\", \"Filipe\"], \"-Dias-\": [\"2\", \"5\", \"7\"]}}", result1)
     }
 
     @Test

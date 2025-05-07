@@ -123,8 +123,4 @@ class GetJsonTests {
         assertEquals(200, response.code)
         assertEquals(JsonString("15").toJsonString(), response.body.string())
     }
-
-
-
-
 }

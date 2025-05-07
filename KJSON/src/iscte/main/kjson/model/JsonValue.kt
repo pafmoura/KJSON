@@ -39,8 +39,9 @@ interface JsonValue {
                     return
                 }
 
-                this.data.entries.forEach { entry ->
-                    visitor.visit(entry)
+                for (entry in this.data.entries){
+                    if(visitor.visit(entry))
+                        continue
                     entry.value.accept(visitor)
                 }
             }

@@ -26,6 +26,7 @@ class VisitorFilterObject(
 
                 if (array.isNotEmpty()) {
                     filteredMap.put(key, array)
+                    return true
                 }
             }
 
@@ -34,6 +35,7 @@ class VisitorFilterObject(
 
                 if (obj.isNotEmpty()) {
                     filteredMap.put(key, obj)
+                    return true
                 }
             }
 
@@ -48,6 +50,7 @@ class VisitorFilterObject(
 
     override fun visit(obj: JsonObjectBase): Boolean {
         firstObjectJson = firstObjectJson ?: obj
+
         return false
     }
 
@@ -91,8 +94,18 @@ class VisitorFilterArray(
 
 
     override fun visit(array: JsonArrayBase): Boolean {
-        firstJsonArrayBase = firstJsonArrayBase ?: array
-        return false
+        if (firstJsonArrayBase == null){
+            firstJsonArrayBase = array
+            return false
+        }
+
+        val filteredArray = array.filter(valuePredicate, keyPredicate)
+
+        if (filteredArray.isNotEmpty()) {
+            filteredList.add(filteredArray)
+        }
+
+        return true
     }
 
     fun getResult(): JsonArrayBase {
