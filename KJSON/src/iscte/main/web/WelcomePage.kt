@@ -1,5 +1,15 @@
 package iscte.main.web
 
+/**
+ * Generates an HTML welcome page for the GetJson Web API.
+ *
+ * This function creates a simple HTML document that lists the available API endpoints.
+ * The HTML includes basic styling for better readability.
+ *
+ * @param paths A list of strings representing the API endpoints.
+ *
+ * @return A string containing the HTML document.
+ */
 fun getWelcomePageHtml(paths: List<String>): String {
     return """
     <!DOCTYPE html>

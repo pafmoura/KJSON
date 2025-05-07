@@ -5,8 +5,28 @@ import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
 
-
+/**
+ * Utility object for converting Kotlin objects to JSON values.
+ *
+ * This object provides a method to convert various types of Kotlin objects, including data classes,
+ * enums, lists, and maps, into their corresponding JSON representations.
+ */
 object JsonReflection {
+
+    /**
+     * Converts a Kotlin object to a JSON value.
+     *
+     * This method takes an object of any type and converts it to a [JsonValue].
+     * It supports null values, primitive types, strings, enums, lists, maps,
+     * and data classes.
+     *
+     * @param value The object to convert to JSON.
+     * @return A [JsonValue] representing the object.
+     *
+     * @throws IllegalArgumentException If the object is of an unsupported type.
+     *
+     * This method uses reflection to inspect the properties of data classes
+     */
     fun toJsonValue(value: Any?): JsonValue {
         return when (value) {
             null -> JsonNull
