@@ -25,9 +25,35 @@ class Controller {
     ): Map<String, String> = mapOf(text to text.repeat(n))
 }
 
+@Mapping("utils")
+class ControllerTwo {
+
+    @Mapping("greet/{name}")
+    fun greet(
+        @Path name: String
+    ): String = "Hello, $name!"
+
+    @Mapping("calculate/{a}/{b}")
+    fun calculate(
+        @Path a: Int,
+        @Path b: Int,
+        @Param op: String
+    ): String {
+        return when (op) {
+            "add" -> (a + b).toString()
+            "sub" -> (a - b).toString()
+            "mul" -> (a * b).toString()
+            "div" -> (a / b).toString()
+            else -> "Invalid operation"
+        }
+    }
+
+
+}
+
 
 fun main() {
-    val app = GetJson(Controller::class)
+    val app = GetJson(Controller::class, ControllerTwo::class)
     app.start()
 
 }
