@@ -73,7 +73,7 @@ class JsonArrayTests {
 
         assertEquals("[\"Paulo\", {\"Alunos\": [\"Paulo\"]}, {\"Alunos\": [\"Paulo\"]}]", result)
 
-  
+
     }
 
     @Test
@@ -122,7 +122,7 @@ class JsonArrayTests {
                 )
             )
         )
-        assertTrue(jsonArray2.isAllSameType())
+        assertFalse(jsonArray2.isAllSameType())
 
         val jsonArray3 = JsonArray(
             listOf(

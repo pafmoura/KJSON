@@ -26,7 +26,6 @@ class VisitorFilterObject(
 
                 if (array.isNotEmpty()) {
                     filteredMap.put(key, array)
-
                 }
             }
 
@@ -35,7 +34,6 @@ class VisitorFilterObject(
 
                 if (obj.isNotEmpty()) {
                     filteredMap.put(key, obj)
-
                 }
             }
 

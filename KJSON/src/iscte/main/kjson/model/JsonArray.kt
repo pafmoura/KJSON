@@ -1,21 +1,44 @@
 package iscte.main.kjson.model
 
-import iscte.main.kjson.visitor.VisitorAllSameType
+
+import VisitorAllSameType
 import iscte.main.kjson.visitor.VisitorFilterArray
 import iscte.main.kjson.visitor.VisitorMapArray
 
+
+/**
+ * Abstract base class representing a JSON array.
+ * Provides common functionality for JSON array manipulation and traversal.
+ *
+ * @property list The underlying list of `JsonValue` elements.
+ */
 abstract class JsonArrayBase(
     protected open val list: List<JsonValue> = listOf<JsonValue>()
 ) : JsonValue {
 
+    /**
+     * Returns the data of the JSON array as a list of `JsonValue`.
+     */
     override val data: List<JsonValue> get() = list
 
+    /**
+     * Converts the JSON array to its JSON string representation.
+     *
+     * @return A JSON string representing the array.
+     */
     override fun toJsonString(): String {
         return data.joinToString(
             separator = ", ", prefix = "[", postfix = "]"
         ) { it.toJsonString() }
     }
 
+    /**
+     * Filters the JSON array based on value and key predicates.
+     *
+     * @param valuePredicate A predicate to filter values.
+     * @param keyPredicate A predicate to filter keys.
+     * @return A new filtered `JsonArrayBase`.
+     */
     open fun filter(
         valuePredicate: (JsonValue) -> Boolean,
         keyPredicate: (String) -> Boolean
@@ -25,12 +48,25 @@ abstract class JsonArrayBase(
         return visitor.getResult()
     }
 
+    /**
+     * Filters the JSON array based on a value predicate.
+     *
+     * @param valuePredicate A predicate to filter values.
+     * @return A new filtered `JsonArrayBase`.
+     */
     open fun filter(
         valuePredicate: (JsonValue) -> Boolean
     ): JsonArrayBase {
         return filter(valuePredicate) { key -> true }
     }
 
+    /**
+     * Maps the JSON array by applying actions to values and keys.
+     *
+     * @param valueAction A function to transform values.
+     * @param keyAction A function to transform keys.
+     * @return A new mapped `JsonArrayBase`.
+     */
     open fun map(
         valueAction: (JsonValue) -> JsonValue,
         keyAction: (String) -> String
@@ -166,11 +202,11 @@ class MutableJsonArray(
         return JsonArray(this.data.subList(fromIndex, toIndex))
     }
 
-    fun add(value : JsonValue) : Boolean {
+    fun add(value: JsonValue): Boolean {
         return list.add(value)
     }
 
-    fun removeAt(index : Int) : JsonValue {
+    fun removeAt(index: Int): JsonValue {
         return list.removeAt(index)
     }
 

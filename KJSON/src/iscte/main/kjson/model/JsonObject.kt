@@ -1,6 +1,6 @@
 package iscte.main.kjson.model
 
-import iscte.main.kjson.visitor.VisitorAllSameType
+import VisitorAllSameType
 import iscte.main.kjson.visitor.VisitorFilterObject
 import iscte.main.kjson.visitor.VisitorMapObject
 
