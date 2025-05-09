@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="43e108ac-c334-4c77-ba7e-f9dc7ff74bcf" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kjson/model/JsonArray.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kjson/model/JsonArray.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kjson/model/JsonObject.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kjson/model/JsonObject.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kjson/JsonArrayTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kjson/JsonArrayTests.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kjson/JsonObjectTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kjson/JsonObjectTests.kt" afterDir="false" />
-    </list>
+    <list default="true" id="43e108ac-c334-4c77-ba7e-f9dc7ff74bcf" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -73,40 +67,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Build KJSON.executor": "Run",
-    "Gradle.GetJsonTests.executor": "Run",
-    "Gradle.JsonArrayTests.executor": "Run",
-    "Gradle.JsonObjectTests.testJsonObjectAuxiliar.executor": "Run",
-    "Gradle.JsonObjectTests.testJsonObjectConstructor.executor": "Run",
-    "Gradle.KJSON [buildDependents].executor": "Run",
-    "Gradle.KJSON [build].executor": "Run",
-    "Gradle.KJSON [classes].executor": "Run",
-    "Gradle.KJSON [clean].executor": "Run",
-    "Gradle.KJSON [dependencies].executor": "Run",
-    "Gradle.KJSON [dokkaGenerateModuleHtml].executor": "Run",
-    "Gradle.KJSON [dokkaGenerate].executor": "Run",
-    "Gradle.KJSON [javadoc].executor": "Run",
-    "Gradle.Tests in 'KJSON.test'.executor": "Run",
-    "JUnit.Whole project.executor": "Run",
-    "Kotlin.ExampleTutorialVisitorKt.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "D:/Utilizador/Documentos/PA/Projeto-PA/KJSON",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Users/alexm/Desktop/Worksplace/KJSON Project/KJSON/src/main/kotlin/Main.kt",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Build KJSON.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.GetJsonTests.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.JsonArrayTests.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.JsonObjectTests.testJsonObjectAuxiliar.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.JsonObjectTests.testJsonObjectConstructor.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.KJSON [buildDependents].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.KJSON [build].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.KJSON [classes].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.KJSON [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.KJSON [dependencies].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.KJSON [dokkaGenerateModuleHtml].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.KJSON [dokkaGenerate].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.KJSON [javadoc].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Tests in 'KJSON.test'.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Whole project.executor&quot;: &quot;Run&quot;,
+    &quot;Kotlin.ExampleTutorialVisitorKt.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Utilizador/Documentos/PA/Projeto-PA/KJSON&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/alexm/Desktop/Worksplace/KJSON Project/KJSON/src/main/kotlin/Main.kt&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Kotlin.ExampleTutorialVisitorKt">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="Kotlin Scripts.KotlinSettingsScript.settings.gradle.kts" />
@@ -311,6 +305,13 @@
       <option name="filePath" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Gradle.JsonArrayTests" />
+      <item itemvalue="Gradle.JsonObjectTests.testJsonObjectAuxiliar" />
+      <item itemvalue="Gradle.JsonObjectTests.testJsonObjectConstructor" />
+      <item itemvalue="Gradle.Tests in 'KJSON.test'" />
+      <item itemvalue="Kotlin.ExampleTutorialVisitorKt" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Kotlin.ExampleTutorialVisitorKt" />
