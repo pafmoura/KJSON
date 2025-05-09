@@ -41,6 +41,7 @@ abstract class JsonObjectBase(
      *
      * @param valuePredicate A predicate function that takes a JSON value and returns a boolean indicating whether to include it.
      * @param keyPredicate A predicate function that takes a string key and returns a boolean indicating whether to include it.
+     * There is another overload of this function that only filters by value.
      *
      * @return A new JSON object containing only the properties that match the predicates.
 
@@ -58,7 +59,7 @@ abstract class JsonObjectBase(
      * Filters the properties of the JSON object based on the provided value predicate.
      *
      * @param valuePredicate A predicate function that takes a JSON value and returns a boolean indicating whether to include it.
-     *
+     * The key is not filtered in this case.
      * @return A new JSON object containing only the properties that match the value predicate.
      */
 
@@ -74,6 +75,7 @@ abstract class JsonObjectBase(
      *
      * @param valueAction A function that takes a JSON value and returns a transformed JSON value.
      * @param keyAction A function that takes a string key and returns a transformed string key.
+     * There is another overload of this function that only maps by value.
      *
      * @return A new JSON object with the mapped properties.
      */
@@ -90,6 +92,7 @@ abstract class JsonObjectBase(
      * Maps the properties of the JSON object using the provided value action.
      *
      * @param valueAction A function that takes a JSON value and returns a transformed JSON value.
+     * The key is not transformed in this case.
      *
      * @return A new JSON object with the mapped properties.
      */

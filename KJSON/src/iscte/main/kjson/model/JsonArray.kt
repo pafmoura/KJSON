@@ -54,6 +54,7 @@ abstract class JsonArrayBase(
      * Filters the JSON array based on a value predicate.
      *
      * @param valuePredicate A predicate to filter values.
+     * The key predicate is ignored, and all keys are accepted.
      * @return A new filtered `JsonArrayBase`.
      */
     open fun filter(
@@ -82,6 +83,7 @@ abstract class JsonArrayBase(
      * Maps the JSON array by applying an action to values.
      *
      * @param valueAction A function to transform values.
+     * The key action is ignored, and all keys are accepted.
      * @return A new mapped `JsonArrayBase`.
      */
     open fun map(
