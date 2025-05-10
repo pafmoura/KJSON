@@ -27,7 +27,7 @@ The library focuses on type-safe JSON manipulation, enabling powerful post-proce
 
 This diagram reflects the current library implementation (UNDER CONSTRUCTION)
 
-![UML](media/UML.png)
+![UML](media/model.png)
 
 ## Examples
 
