@@ -67,7 +67,7 @@ class JsonReflectionTests {
     @Test
     fun testProjectStatementCase() {
         val expected =
-            "{\"name\": \"PA\", \"credits\": 6, \"evaluation\": [{\"name\": \"quizzes\", \"percentage\": 0.2, \"mandatory\": false, \"type\": null}, {\"name\": \"project\", \"percentage\": 0.8, \"mandatory\": true, \"type\": \"PROJECT\"}]}"
+            "{\"name\": \"PA\", \"credits\": 6, \"evaluation\": [{\"name\": \"quizzes\", \"percentage\": 0.2, \"mandatory\": false, \"type\": null},{\"name\": \"project\", \"percentage\": 0.8, \"mandatory\": true, \"type\": \"PROJECT\"}]}"
         assertEquals(expected, JsonReflection.toJsonValue(course).toJsonString())
 
     }
@@ -101,5 +101,36 @@ class JsonReflectionTests {
         )
         assertEquals(expectedObj, JsonReflection.toJsonValue(map))
     }
+
+    @Test
+    fun testReflectionThrowsIllegalKey(){
+        val map = mapOf(
+            1 to course,
+            "course2" to course
+        )
+
+        try {
+            JsonReflection.toJsonValue(map)
+        } catch (e: IllegalArgumentException) {
+            assertTrue(e.message == "Key must be string")
+        }
+    }
+
+    @Test
+    fun testThrowsNotDataClass(){
+        class NotDataClass(
+            val name: String,
+            val credits: Int
+        )
+        val notDataClass = NotDataClass("PA", 6)
+        try {
+            JsonReflection.toJsonValue(notDataClass)
+        } catch (e: IllegalArgumentException) {
+            assertTrue(e.message == "Value must be a data class")
+        }
+    }
+
+
+
 
 }

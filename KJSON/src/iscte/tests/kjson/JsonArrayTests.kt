@@ -40,10 +40,7 @@ class JsonArrayTests {
     @Test
     fun testArrayToString() {
         val jsonArray = getJsonArray()
-        val expected = "[\"Lista de Candidatos\", " +
-                "2025, " +
-                "{\"name\": \"João\", \"age\": 27, \"city\": \"Lisboa\"}, " +
-                "{\"name\": \"Maria\", \"age\": 25, \"city\": \"Porto\"}]"
+        val expected = "[\"Lista de Candidatos\",2025,{\"name\": \"João\", \"age\": 27, \"city\": \"Lisboa\"},{\"name\": \"Maria\", \"age\": 25, \"city\": \"Porto\"}]"
         assertEquals(expected, jsonArray.toJsonString())
     }
 
@@ -71,7 +68,7 @@ class JsonArrayTests {
                 keyPredicate = { key -> key == "Alunos" }
             ).toJsonString()
 
-        assertEquals("[\"Paulo\", {\"Alunos\": [\"Paulo\"]}, {\"Alunos\": [\"Paulo\"]}]", result)
+        assertEquals("[\"Paulo\",{\"Alunos\": [\"Paulo\"]},{\"Alunos\": [\"Paulo\"]}]", result)
 
         val arr1 = JsonArray(listOf(JsonString("Paulo"), jsonObj1, jsonObj2, arr))
 
@@ -80,7 +77,7 @@ class JsonArrayTests {
                 valuePredicate = { it -> it.data == "Paulo" },
                 keyPredicate = { key -> key == "Alunos" }
             ).toJsonString()
-        assertEquals("[\"Paulo\", {\"Alunos\": [\"Paulo\"]}, {\"Alunos\": [\"Paulo\"]}, [\"Paulo\", {\"Alunos\": [\"Paulo\"]}, {\"Alunos\": [\"Paulo\"]}]]", result1)
+        assertEquals("[\"Paulo\",{\"Alunos\": [\"Paulo\"]},{\"Alunos\": [\"Paulo\"]},[\"Paulo\",{\"Alunos\": [\"Paulo\"]},{\"Alunos\": [\"Paulo\"]}]]", result1)
     }
 
     @Test
@@ -106,8 +103,10 @@ class JsonArrayTests {
                 valueAction = { it -> JsonString(it.data.toString()) },
                 keyAction = { it -> "-$it-" }
             ).toJsonString()
+
+
         assertEquals(
-            "[\"Paulo\", {\"-unidade curricular-\": \"PA\", \"-Alunos-\": [\"Paulo\", \"Filipe\"], \"-Dias-\": [\"2\", \"5\", \"7\"]}, {\"-unidade curricular-\": \"PA\", \"-Alunos-\": [\"Pedro\", \"Paulo\"], \"-Dias-\": [\"3\", \"6\", \"9\"]}]",
+            "[\"Paulo\",{\"-unidade curricular-\": \"PA\", \"-Alunos-\": [\"Paulo\",\"Filipe\"], \"-Dias-\": [\"2\",\"5\",\"7\"]},{\"-unidade curricular-\": \"PA\", \"-Alunos-\": [\"Pedro\",\"Paulo\"], \"-Dias-\": [\"3\",\"6\",\"9\"]}]",
             result
         )
 
@@ -118,8 +117,8 @@ class JsonArrayTests {
                 valueAction = { it -> if (it.data == "Paulo") JsonNumber(1) else it },
                 keyAction = { key -> "-$key-"}
             ).toJsonString()
-        assertEquals("[1, {\"-unidade curricular-\": \"PA\", \"-Alunos-\": [1, \"Filipe\"], \"-Dias-\": [2, 5, 7]}, {\"-unidade curricular-\": \"PA\", \"-Alunos-\": [\"Pedro\", 1], \"-Dias-\": [3, 6, 9]}, [1, {\"-unidade curricular-\": \"PA\", \"-Alunos-\": [1, \"Filipe\"], \"-Dias-\": [2, 5, 7]}, {\"-unidade curricular-\": \"PA\", \"-Alunos-\": [\"Pedro\", 1], \"-Dias-\": [3, 6, 9]}]]", result1)
 
+        assertEquals("[1,{\"-unidade curricular-\": \"PA\", \"-Alunos-\": [1,\"Filipe\"], \"-Dias-\": [2,5,7]},{\"-unidade curricular-\": \"PA\", \"-Alunos-\": [\"Pedro\",1], \"-Dias-\": [3,6,9]},[1,{\"-unidade curricular-\": \"PA\", \"-Alunos-\": [1,\"Filipe\"], \"-Dias-\": [2,5,7]},{\"-unidade curricular-\": \"PA\", \"-Alunos-\": [\"Pedro\",1], \"-Dias-\": [3,6,9]}]]", result1)
     }
 
     @Test

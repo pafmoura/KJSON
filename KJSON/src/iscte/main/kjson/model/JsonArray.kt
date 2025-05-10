@@ -26,12 +26,21 @@ abstract class JsonArrayBase(
     /**
      * Converts the JSON array to its JSON string representation.
      *
+     * @param pretty A flag indicating whether to format the JSON string with indentation.
+     * Applies to JsonObject
+     *
      * @return A JSON string representing the array.
      */
-    override fun toJsonString(): String {
+    override fun toJsonString(pretty : Boolean ): String {
+        if (pretty) {
+            return data.joinToString(
+                separator = ",", prefix = "[", postfix = "]"
+            ) { it.toJsonString(true) }
+        }
         return data.joinToString(
-            separator = ", ", prefix = "[", postfix = "]"
+            separator = ",", prefix = "[", postfix = "]"
         ) { it.toJsonString() }
+
     }
 
     /**

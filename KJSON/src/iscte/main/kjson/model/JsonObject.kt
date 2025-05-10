@@ -28,12 +28,22 @@ abstract class JsonObjectBase(
     /**
      * Returns a string representation of the JSON object in JSON format.
      *
+     * @param pretty A boolean indicating whether to format the JSON string with indentation and line breaks.
+     * Applies to JsonObject.
+     *
      * @return A string representing the JSON object in JSON format.
      */
-    override fun toJsonString(): String {
-        return properties.entries.joinToString(
-            separator = ", ", prefix = "{", postfix = "}"
-        ) { "\"${it.key}\": ${it.value.toJsonString()}" }
+
+
+     override fun toJsonString(pretty: Boolean): String{
+         if (pretty) {
+             return properties.entries.joinToString(
+                 separator = ",\n", prefix = "\n{\n", postfix = "\n}\n"
+             ) { "\"${it.key}\": ${it.value.toJsonString(true)}" }.prependIndent("\t")
+         }
+         return properties.entries.joinToString(
+             separator = ", ", prefix = "{", postfix = "}"
+         ) { "\"${it.key}\": ${it.value.toJsonString()}" }
     }
 
     /**

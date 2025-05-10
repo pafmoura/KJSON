@@ -1,4 +1,3 @@
-import iscte.main.kjson.utils.JsonReflection
 import iscte.main.web.GetJson
 import iscte.main.web.Mapping
 import iscte.main.web.Param
@@ -47,8 +46,6 @@ class ControllerTwo {
             else -> "Invalid operation"
         }
     }
-
-
 }
 
 

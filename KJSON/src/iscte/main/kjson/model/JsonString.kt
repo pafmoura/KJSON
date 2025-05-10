@@ -5,6 +5,7 @@ package iscte.main.kjson.model
  *
  * @property data The string value.
  *
+ *
  * This class implements the [JsonValue] interface, which means it can be used in JSON structures.
  */
 data class JsonString(override val data: String) : JsonValue {
@@ -13,10 +14,13 @@ data class JsonString(override val data: String) : JsonValue {
      * Converts the [JsonString] to a JSON string representation.
      * Overrides the `toJsonString` method from the [JsonValue] interface.
      *
+     * @param pretty A flag indicating whether to format the JSON string with indentation.
+     * Applies to JsonObject
+     *
      * @return A JSON string representation of the [JsonString].
      *
      */
-    override fun toJsonString(): String = "\"$data\""
+    override fun toJsonString(pretty: Boolean): String = "\"$data\""
 
     /**
      * Overrides operator for concatenate string operation with a JsonString

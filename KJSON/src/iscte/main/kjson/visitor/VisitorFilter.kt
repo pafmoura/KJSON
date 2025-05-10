@@ -9,14 +9,29 @@ import iscte.main.kjson.model.MutableJsonArray
 import iscte.main.kjson.model.MutableJsonObject
 
 
+/**
+ * Visitor that filters JSON objects and arrays based on given predicates.
+ *
+ * This visitor traverses the JSON structure and applies the provided predicates to filter elements.
+ */
 class VisitorFilterObject(
     private val valuePredicate: (JsonValue) -> Boolean,
     private val keyPredicate: (String) -> Boolean
 ) : JsonVisitor {
     val filteredMap = mutableMapOf<String, JsonValue>()
 
+    /**
+     * The first JSON object encountered during the traversal.
+     * This is used to determine the type of the resulting filtered object.
+     */
     private var firstObjectJson: JsonValue? = null
 
+    /**
+     * Visits a JSON entry and applies the filtering predicates.
+     *
+     * @param entry The JSON entry to visit.
+     * @return true if the visitor should stop visiting, false otherwise.
+     */
     override fun visit(entry: Map.Entry<String, JsonValue>): Boolean {
         val key = entry.key
         val value = entry.value
@@ -48,16 +63,34 @@ class VisitorFilterObject(
         return false
     }
 
+    /**
+     * Visits a JSON object and applies the filtering predicates.
+     *
+     * @param obj The JSON object to visit.
+     * @return true if the visitor should stop visiting, false otherwise.
+     */
     override fun visit(obj: JsonObjectBase): Boolean {
         firstObjectJson = firstObjectJson ?: obj
 
         return false
     }
 
+    /**
+     * Visits a JSON array and applies the filtering predicates.
+     *
+     * @param array The JSON array to visit.
+     * @return true if the visitor should stop visiting, false otherwise.
+     */
     override fun visit(array: JsonArrayBase): Boolean {
         return true
     }
 
+    /**
+     * Returns the filtered JSON object based on the first encountered JSON object type.
+     *
+     * @return The filtered JSON object.
+     * @throws IllegalStateException if the first encountered JSON object type is unknown.
+     */
     fun getResult(): JsonObjectBase {
         return when (firstObjectJson) {
             is MutableJsonObject -> MutableJsonObject(filteredMap)
@@ -67,6 +100,11 @@ class VisitorFilterObject(
     }
 }
 
+/**
+ * Visitor that filters JSON arrays based on given predicates.
+ *
+ * This visitor traverses the JSON structure and applies the provided predicates to filter elements.
+ */
 class VisitorFilterArray(
     private val valuePredicate: (JsonValue) -> Boolean,
     private val keyPredicate: (String) -> Boolean
@@ -74,6 +112,12 @@ class VisitorFilterArray(
     val filteredList = mutableListOf<JsonValue>()
     private var firstJsonArrayBase: JsonArrayBase? = null
 
+    /**
+     * Visits a JSON value and applies the filtering predicates.
+     *
+     * @param value The JSON value to visit.
+     * @return true if the visitor should stop visiting, false otherwise.
+     */
     override fun visit(value: JsonValue): Boolean {
         if (valuePredicate(value)) {
             filteredList.add(value)
@@ -82,6 +126,12 @@ class VisitorFilterArray(
     }
 
 
+    /**
+     * Visits a JSON object and applies the filtering predicates.
+     *
+     * @param obj The JSON object to visit.
+     * @return true if the visitor should stop visiting, false otherwise.
+     */
     override fun visit(obj: JsonObjectBase): Boolean {
         val filteredObj = obj.filter(valuePredicate, keyPredicate)
 
@@ -93,6 +143,12 @@ class VisitorFilterArray(
     }
 
 
+    /**
+     * Visits a JSON array and applies the filtering predicates.
+     *
+     * @param array The JSON array to visit.
+     * @return true if the visitor should stop visiting, false otherwise.
+     */
     override fun visit(array: JsonArrayBase): Boolean {
         if (firstJsonArrayBase == null){
             firstJsonArrayBase = array
@@ -108,6 +164,12 @@ class VisitorFilterArray(
         return true
     }
 
+    /**
+     * Returns the filtered JSON array based on the first encountered JSON array type.
+     *
+     * @return The filtered JSON array.
+     * @throws IllegalStateException if the first encountered JSON array type is unknown.
+     */
     fun getResult(): JsonArrayBase {
         return when (firstJsonArrayBase) {
             is JsonArray -> JsonArray(filteredList)

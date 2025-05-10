@@ -114,6 +114,20 @@ val product = JsonObject(
 
 val jsonString = product.toJsonString()
 // Result: {"id": 101, "name": "Laptop XYZ", "price": 999.99, "inStock": true, "specs": {"cpu": "i7", "ram": "16GB"}}
+
+//Parameter ``pretty = true`` allows identation for JsonObject
+println(product.toJsonString(true)
+/*
+Result:
+{"id": 101,
+"name": "Laptop XYZ", 
+"price": 999.99,
+ ...
+*/
+
+
+
+
 ```
 
 
@@ -258,5 +272,100 @@ Through reflection, the library allows the transformation of the following Kotli
 ```
 # GetJSON API
 As a Use Case for this library, a server was created to allow the creation of HTTP/GET endpoints that return JSON. This framework uses the library in question to convert Kotlin values into JSON, based on the reflection presented above.
+
+## Features
+
+- Simple annotation-based endpoint configuration
+- Automatic JSON serialization of:
+  - Primitive types
+  - Collections (List, Map, Pair)
+  - Custom objects
+- Path variable and query parameter support
+- Multiple controller class support
+
+### Main Functions Examples
+
+### Start
+```kotlin
+val app = GetJson(Controller::class, ControllerTwo::class)
+    app.start()
+    //or, specify a port
+    app.start(7580)
+```
+
+### Shutdown
+```kotlin
+val app = GetJson(Controller::class, ControllerTwo::class)
+    app.start()
+    app.shutdown()
+```
+
+
+## ✏️ Annotations
+This library contains three types of annotations that allow the specification of mapping, variables and parameters.
+
+The examples on the following annotations are based on the ExampleServer.kt file.
+
+####  Mapping 
+This annotation applies to Class and Functions, and allows the mapping specification of this entities to a specific path
+
+```kotlin
+@Mapping("api")
+class Controller {
+    @Mapping("ints")
+    fun demo(): List<Int> = listOf(1, 2, 3)
+
+// Call: /api/ints
+```
+
+#### Path
+ This annotation applies to Value Parameters, and allows the specification of a path variable in a function parameter
+
+```kotlin
+
+@Mapping("utils")
+class ControllerTwo {
+    @Mapping("greet/{name}")
+    fun greet(
+        @Path name: String
+    ): String = "Hello, $name!"
+
+// Call: /utils/greet/{name}
+```
+
+
+#### Param
+ This annotation allows the specification of a query parameter in a function parameter
+
+```kotlin
+
+@Mapping("utils")
+class ControllerTwo {
+    @Mapping("calculate/{a}/{b}")
+    fun calculate(
+        @Path a: Int,
+        @Path b: Int,
+        @Param op: String
+    ): String {
+        return when (op) {
+            "add" -> (a + b).toString()
+
+
+// Call: /utils/calculate/{a}/{b}?op={op}      
+```
+
+
+## Example Server
+
+💡 The library includes a default server, that runs on port 8080, named ExampleServer, that includes two example classes with different types of functions, that include:
+
+| Controller    | Endpoint                     | Parameters                          | Example Request                          | Response Example                          |
+|---------------|------------------------------|-------------------------------------|------------------------------------------|--------------------------------------------|
+| `Controller`  | `GET /api/ints`              | None                                | `http://localhost:8080/api/ints`    | `[1, 2, 3]`                                |
+| `Controller`  | `GET /api/pair`              | None                                | `http://localhost:8080/api/pair`    | `{"first":"um","second":"dois"}`           |
+| `Controller`  | `GET /api/path/{pathvar}`    | `@Path pathvar: String`             | `http://localhost:8080/api/path/foo`| `"foo!"`                                   |
+| `Controller`  | `GET /api/args`              | `@Param n: Int`, `@Param text: Str` | `http://localhost:8080/api/args?n=2&text=hi` | `{"hi":"hihi"}`               |
+| `ControllerTwo` | `GET /utils/greet/{name}`  | `@Path name: String`                | `http://localhost:8080/utils/greet/John` | `"Hello, John!"`              |
+| `ControllerTwo` | `GET /utils/calculate/{a}/{b}` | `@Path a: Int`, `@Path b: Int`, `@Param op: Str` | `http://localhost:8080/utils/calculate/10/5?op=add` | `"15"` |
 
 

@@ -23,7 +23,7 @@ interface JsonValue {
      *
      * @return A string representation of the JSON value in JSON format.
      */
-    fun toJsonString(): String = this.data.toString()
+    fun toJsonString(pretty: Boolean = false): String = this.data.toString()
 
     /**
      * Accepts a visitor that implements the [JsonVisitor] interface.

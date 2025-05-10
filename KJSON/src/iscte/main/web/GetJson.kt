@@ -50,7 +50,7 @@ class GetJson(vararg val args: KClass<*>) {
      * HTML template for page not found
      * @return HTML string for 404 error page
      */
-    fun pageNotFound(): String {
+     fun pageNotFound(): String {
         return """
             <html>
                 <head>
@@ -73,6 +73,7 @@ class GetJson(vararg val args: KClass<*>) {
      *
      */
     fun transformURL(request: RecordedRequest, path: String): String {
+
         val (requestRoot, params) = request.path.toString().split("?")
         val requestParams = params.split("&")
         val mapParams = mutableMapOf<String,String>()
@@ -82,17 +83,13 @@ class GetJson(vararg val args: KClass<*>) {
         }
 
         val keyParams = path.split("?", limit = 2)[1].split("&")
-
-
-
-        val newParams = mapParams.keys
-            .filter { key -> keyParams.any { it.contains(key) } }
+        val newParams = keyParams
+            .filter { key -> mapParams.keys.any { key.contains(it) } }
             .joinToString("&") { key ->
-                val value = mapParams[key]
-                "$key=$value"
+                val paramKey = mapParams.keys.first { key.contains(it) }
+                val value = mapParams[paramKey]
+                "$paramKey=$value"
             }
-
-        println(newParams)
         return "$requestRoot?$newParams"
     }
 
@@ -124,6 +121,7 @@ class GetJson(vararg val args: KClass<*>) {
         pathing.entries.forEach {
 
             val pattern = Regex(it.key)
+
             var requestedURL = request.path.toString()
 
             if (requestedURL.contains("?") && it.key.contains("?")) {

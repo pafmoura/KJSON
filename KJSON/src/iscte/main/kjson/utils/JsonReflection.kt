@@ -1,7 +1,12 @@
 package iscte.main.kjson.utils
 
-import iscte.main.kjson.model.*
-import kotlin.reflect.full.declaredMemberProperties
+import iscte.main.kjson.model.JsonArray
+import iscte.main.kjson.model.JsonBoolean
+import iscte.main.kjson.model.JsonNull
+import iscte.main.kjson.model.JsonNumber
+import iscte.main.kjson.model.JsonObject
+import iscte.main.kjson.model.JsonString
+import iscte.main.kjson.model.JsonValue
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
 
@@ -16,12 +21,12 @@ object JsonReflection {
     /**
      * Converts a Kotlin object to a JSON value.
      *
-     * This method takes an object of any type and converts it to a [JsonValue].
+     * This method takes an object of any type and converts it to a [iscte.main.kjson.model.JsonValue].
      * It supports null values, primitive types, strings, enums, lists, maps,
      * and data classes.
      *
      * @param value The object to convert to JSON.
-     * @return A [JsonValue] representing the object.
+     * @return A [iscte.main.kjson.model.JsonValue] representing the object.
      *
      * @throws IllegalArgumentException If the object is of an unsupported type.
      *

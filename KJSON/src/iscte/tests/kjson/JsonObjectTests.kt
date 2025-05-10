@@ -106,7 +106,7 @@ class JsonObjectTests {
         ).toJsonString()
 
         assertEquals(
-            "{\"-Professor-\": \"Paulo\", \"-Alunos-\": [\"Paulo\", \"Filipe\"], \"-Dias-\": [\"2\", \"5\", \"7\"]}",
+            "{\"-Professor-\": \"Paulo\", \"-Alunos-\": [\"Paulo\",\"Filipe\"], \"-Dias-\": [\"2\",\"5\",\"7\"]}",
             result
         )
 
@@ -118,11 +118,15 @@ class JsonObjectTests {
         )
 
         val result1 = obj1.map(
-            valueAction = { it ->  JsonString(it.data.toString()) },
+            valueAction = { it -> JsonString(it.data.toString()) },
             keyAction = { it -> "-$it-" }
         ).toJsonString()
 
-        assertEquals("{\"-Professor-\": \"Raimundo\", \"-extra-\": {\"-Professor-\": \"Paulo\", \"-Alunos-\": [\"Paulo\", \"Filipe\"], \"-Dias-\": [\"2\", \"5\", \"7\"]}}", result1)
+        print(result1)
+        assertEquals(
+            "{\"-Professor-\": \"Raimundo\", \"-extra-\": {\"-Professor-\": \"Paulo\", \"-Alunos-\": [\"Paulo\",\"Filipe\"], \"-Dias-\": [\"2\",\"5\",\"7\"]}}",
+            result1
+        )
     }
 
     @Test
@@ -210,5 +214,6 @@ class JsonObjectTests {
             jsonObj1.get("Alunos")
         )
     }
+
 
 }
