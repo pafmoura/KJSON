@@ -23,11 +23,11 @@ The library focuses on type-safe JSON manipulation, enabling powerful post-proce
 </div>
 
 
-## UML Digram
+## UML Diagram
 
-This diagram reflects the current library implementation (UNDER CONSTRUCTION)
+This diagram reflects the current model library implementation.
 
-![UML](media/model.png)
+![UML](media/model.jpg)
 
 ## Examples
 
@@ -272,6 +272,11 @@ Through reflection, the library allows the transformation of the following Kotli
 ```
 # GetJSON API
 As a Use Case for this library, a server was created to allow the creation of HTTP/GET endpoints that return JSON. This framework uses the library in question to convert Kotlin values into JSON, based on the reflection presented above.
+
+## UML Diagram
+This diagram reflects the current model library implementation.
+
+![UML](media/web.jpg)
 
 ## Features
 
