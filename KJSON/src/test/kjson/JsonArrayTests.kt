@@ -222,10 +222,22 @@ class JsonArrayTests {
     }
 
     @Test
-    fun clear() {
+    fun testClear() {
         val jsonArray = MutableJsonArray(mutableListOf(JsonString("paulo"), JsonString("filipe")))
         jsonArray.clear()
         assertEquals(JsonArray(listOf()), jsonArray)
+    }
+
+    @Test
+    fun testJsonArrayConstructor(){
+        val jsonArray = JsonArray(JsonString("test"), JsonNumber(123))
+        val jsonArrayExpected = JsonArray(listOf(JsonString("test"), JsonNumber(123)))
+
+        val mutJsonArray = MutableJsonArray(JsonString("test"), JsonNumber(123))
+        val mutJsonArrayExpected = MutableJsonArray(mutableListOf(JsonString("test"), JsonNumber(123)))
+
+        assertEquals(jsonArray, jsonArrayExpected)
+        assertEquals(mutJsonArray, mutJsonArrayExpected)
     }
 
 

@@ -199,6 +199,16 @@ class JsonArray(
     override val list: List<JsonValue>
 ) : JsonArrayBase(list) {
 
+
+    /**
+     * Auxiliar constructor to create a JSON array from a variable number of elements.
+     *
+     * @param elements The elements to add to the JSON array.
+     */
+    constructor(vararg elements: JsonValue) : this(elements.toList())
+
+
+
     /**
      * Filters the JSON array based on value and key predicates.
      *
@@ -286,6 +296,13 @@ class JsonArray(
 class MutableJsonArray(
     override val list: MutableList<JsonValue>
 ) : JsonArrayBase(list) {
+
+    /**
+     * Auxiliar constructor to create a mutable JSON array from a variable number of elements.
+     *
+     * @param elements The elements to add to the JSON array.
+     */
+    constructor(vararg elements: JsonValue) : this(elements.toMutableList())
 
     /**
      * Filters the JSON array based on value and key predicates.

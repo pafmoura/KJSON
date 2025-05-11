@@ -121,7 +121,6 @@ class JsonObjectTests {
             keyAction = { it -> "-$it-" }
         ).toJsonString()
 
-        print(result1)
         assertEquals(
             "{\"-Professor-\": \"Raimundo\", \"-extra-\": {\"-Professor-\": \"Paulo\", \"-Alunos-\": [\"Paulo\",\"Filipe\"], \"-Dias-\": [\"2\",\"5\",\"7\"]}}",
             result1
@@ -212,6 +211,43 @@ class JsonObjectTests {
             JsonArray(listOf(JsonString("Paulo"), JsonString("Filipe"))),
             jsonObj1.get("Alunos")
         )
+    }
+
+    @Test
+    fun testJsonObjectConstructor(){
+        val mutObj = MutableJsonObject(
+            "name" to JsonString("Alice"),
+            "age" to JsonNumber(30),
+            "approved" to JsonBoolean(true)
+        )
+        val mutObjExpected = MutableJsonObject(
+            mutableMapOf(
+                "name" to JsonString("Alice"),
+                "age" to JsonNumber(30),
+                "approved" to JsonBoolean(true)
+            ))
+
+        assertEquals(mutObjExpected, mutObj)
+
+
+        val obj = JsonObject(
+            mapOf(
+                "name" to JsonString("Alice"),
+                "age" to JsonNumber(30),
+                "approved" to JsonBoolean(true)
+            )
+        )
+
+        val objExpected = JsonObject(
+            mapOf(
+                "name" to JsonString("Alice"),
+                "age" to JsonNumber(30),
+                "approved" to JsonBoolean(true)
+            )
+        )
+
+        assertEquals(objExpected, obj)
+
     }
 
 
