@@ -4,7 +4,7 @@ This Kotlin library provides in-memory JSON modeling and manipulation capabiliti
 
 The library focuses on type-safe JSON manipulation, enabling powerful post-processing operations.
 
-## Main Features
+## ✅ Main Features
 
 - Programmatically create and compose JSON structures
 - Filter and transform JSON objects and arrays
@@ -13,23 +13,23 @@ The library focuses on type-safe JSON manipulation, enabling powerful post-proce
 
 
 
-## Authors
+## 💻 Authors
 
 <div align="center">
 
-| [@AlexandreMilharado](https://github.com/AlexandreMilharado) | |[@pafmoura](https://github.com/pafmoura) |
-|:--:|:--:|:--:|
-| <img src="https://github.com/AlexandreMilharado.png" width="80"/> | &nbsp; &nbsp; &nbsp; &nbsp;  | <img src="https://github.com/pafmoura.png" width="80"/> |
+| [@AlexandreMilharado](https://github.com/AlexandreMilharado)  |[@pafmoura](https://github.com/pafmoura) |
+|:--:|:--:|
+| <img src="https://github.com/AlexandreMilharado.png" width="80"/>  | <img src="https://github.com/pafmoura.png" width="80"/> |
 </div>
 
 
-## UML Diagram
+## 📑 UML Digram
 
 This diagram reflects the current model library implementation.
 
 ![UML](media/model.jpg)
 
-## Examples
+## 📔 Examples
 
 This section aims to present code examples for the library's basic functionalities.
 For more details, please consult the library's official documentation
@@ -75,12 +75,30 @@ val person = JsonObject(
     )
 )
 
+//In alternative, there is a varargs constructor that allows multiple values for Array and Object, instead of creating a List or a Map, respectively
+val person = JsonObject(
+        "name" to JsonString("John Doe"),
+        "age" to JsonNumber(30),
+        "isStudent" to JsonBoolean(false),
+        "address" to JsonObject(
+                "street" to JsonString("123 Main St"),
+                "city" to JsonString("Lisbon"),
+                "postalCode" to JsonNumber(1000)
+            ),
+        "courses" to JsonArray(
+            JsonString("Programação Avançada"),
+            JsonString("Processamento Computacional da Língua"),
+            JsonString("Arquitetura e Desenvolvimento de Software")
+        )
+    )
+
+
+
 // Creating a mutable JSON object
 val mutablePerson = MutableJsonObject(
-    mutableMapOf(
         "name" to JsonString("Jane Smith"),
         "age" to JsonNumber(25)
-    )
+    
 )
 
 // Adding properties to mutable object
@@ -88,8 +106,6 @@ mutablePerson.put("isStudent", JsonBoolean(true))
 mutablePerson.put("courses", JsonArray(listOf(
     JsonString("Inteligência Computacional e Otimização"),
 )))
-
-
 ```
 #### String Serialization 
 The library allows string serialization using the function ``toJsonString()``
@@ -115,19 +131,18 @@ val product = JsonObject(
 val jsonString = product.toJsonString()
 // Result: {"id": 101, "name": "Laptop XYZ", "price": 999.99, "inStock": true, "specs": {"cpu": "i7", "ram": "16GB"}}
 
-//Parameter ``pretty = true`` allows identation for JsonObject
+```
+Parameter ``pretty = true`` allows identation for JsonObject
+```kotlin
 println(product.toJsonString(true)
 /*
 Result:
-{"id": 101,
+{
+"id": 101,
 "name": "Laptop XYZ", 
 "price": 999.99,
  ...
 */
-
-
-
-
 ```
 
 
@@ -209,16 +224,94 @@ println(transformed.toJsonString())
 ```
 
 #### Operations
-```
-Pôr código
-```
+There are several operators overriden to use with our datatypes. 
 
-#### Use Object Visitor 
+Below, there are some examples of this use. For more information about this operators, please consult the official documentation.
 ```kotlin
-Pôr código...
+// Numbers sum
+val num1 = JsonNumber(5)
+val num2 = JsonNumber(10)
+val result = num1 + num2
+
+// Numbers sum, preserves the number type (Double)
+val num1pos = JsonNumber(2.0)
+val num2neg = JsonNumber(-1.0)
+val resultposneg = num1pos + num2neg
+
+// String Concatenation
+ val str1 = JsonString("Hello")
+val str2 = JsonString("World")
+val result = str1 + str2
+
+// Array Concatenation
+val jsonArray1 = JsonArray(listOf(JsonString("test"), JsonNumber(123)))
+val jsonArray2 = JsonArray(listOf(JsonString("test2"), JsonNumber(456)))
+val result = jsonArray1 + jsonArray2
+//result = JsonArray(JsonString("test"), JsonNumber(123), JsonString("test2"), JsonNumber(456))
+
+//Array Equals
+val jsonArray1 = JsonArray(listOf(JsonString("test"), JsonNumber(123)))
+val jsonArray2 = JsonArray(listOf(JsonString("test"), JsonNumber(123)))
+assertTrue(jsonArray1 == jsonArray2)
+
+//And many others
 ```
 
-### Inference
+#### Use a Visitor 
+The library has implemented the pattern Visitor, that allows the transversal of the different structures.
+Based on that pattern, we implemented some Concrete Visitors, designed to specific tasks
+
+To use them explicitly, without the wrap functions developed
+```kotlin
+// Instantiate the visitor
+val visitor = VisitorAllSameType()
+
+// Use accept to let the visitor traverse the JSON structure
+jsonArray.accept(visitor)
+```
+
+#### Create a custom visitor
+Using the logic implemented, the user is allowed to create a custom visitor, to do specific tasks.
+For example:
+```kotlin
+class CountStringsVisitor : JsonVisitor {
+    var count = 0
+        private set
+
+    override fun visit(value: JsonValue): Boolean {
+        if (value is JsonString) {
+            count++
+        }
+        return false // continue visiting
+    }
+}
+```
+
+This visitor, can then be used with:
+```kotlin
+ val visitor = CountStringsVisitor()
+    val jsonArr = JsonArray(
+        JsonString("Hello"),
+        JsonString("World"),
+        JsonString("JSON"),
+        JsonNumber(2025),
+        JsonObject(
+            "key1" to JsonString("value1"),
+            "key2" to JsonNumber(42),
+            "key3" to JsonArray(
+                JsonString("item1"),
+                JsonString("item2")
+            )
+        ))
+    
+    jsonArr.accept(visitor)
+    println("Number of strings: ${visitor.count}")
+    //result: "Number of String: 6"
+```
+
+This example is available in the file ExampleTutorialVisitor.kt
+
+### 🚪 Inference
 Code examples related to the JSON Inference 
 
 #### Transform to Json 
@@ -278,7 +371,8 @@ This diagram reflects the current model library implementation.
 
 ![UML](media/web.jpg)
 
-## Features
+
+## ✅ Features
 
 - Simple annotation-based endpoint configuration
 - Automatic JSON serialization of:
@@ -288,7 +382,7 @@ This diagram reflects the current model library implementation.
 - Path variable and query parameter support
 - Multiple controller class support
 
-### Main Functions Examples
+### 📔 Main Functions Examples
 
 ### Start
 ```kotlin
@@ -360,7 +454,7 @@ class ControllerTwo {
 ```
 
 
-## Example Server
+## 💻 Example Server
 
 💡 The library includes a default server, that runs on port 8080, named ExampleServer, that includes two example classes with different types of functions, that include:
 

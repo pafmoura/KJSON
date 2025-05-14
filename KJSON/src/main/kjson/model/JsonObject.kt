@@ -202,6 +202,14 @@ class MutableJsonObject(
 ) : JsonObjectBase(properties) {
 
     /**
+     * Auxiliar Constructor to create a mutable JSON object with the specified key-value pairs.
+     *
+     * @param pairs A variable number of key-value pairs to initialize the JSON object.
+     */
+    constructor(vararg pairs: Pair<String, JsonValue>) : this(pairs.toMap().toMutableMap())
+
+
+    /**
      * Filters the properties of the JSON object based on the provided predicates.
      *
      * @param valuePredicate A predicate function that takes a JSON value and returns a boolean indicating whether to include it.
@@ -301,6 +309,13 @@ class MutableJsonObject(
 class JsonObject(
     override val properties: Map<String, JsonValue> = mapOf()
 ) : JsonObjectBase(properties) {
+
+    /**
+     * Auxiliar Constructor to create an immutable JSON object with the specified key-value pairs.
+     *
+     * @param pairs A variable number of key-value pairs to initialize the JSON object.
+     */
+    constructor(vararg pairs: Pair<String, JsonValue>) : this(pairs.toMap())
 
     /**
      * Filters the properties of the JSON object based on the provided predicates.
