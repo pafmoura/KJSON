@@ -5,42 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="43e108ac-c334-4c77-ba7e-f9dc7ff74bcf" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/JSONKotlin-PA-Project.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/KotlinJavaRuntime.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/kotlin_reflect.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/squareup_okhttp3_mockwebserver.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/squareup_okhttp3_okhttp.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KJSON.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iscte/main/kjson/model/JsonArray.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iscte/main/kjson/model/JsonBoolean.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iscte/main/kjson/model/JsonNull.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iscte/main/kjson/model/JsonNumber.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iscte/main/kjson/model/JsonObject.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iscte/main/kjson/model/JsonString.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iscte/main/kjson/model/JsonValue.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iscte/main/kjson/utils/JsonReflection.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iscte/main/kjson/visitor/JsonVisitor.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iscte/main/kjson/visitor/VisitorAllSameType.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iscte/main/kjson/visitor/VisitorFilter.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iscte/main/kjson/visitor/VisitorMap.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iscte/main/web/ExampleServer.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iscte/main/web/GetJson.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iscte/main/web/WelcomePage.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iscte/tests/kjson/JsonArrayTests.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iscte/tests/kjson/JsonObjectTests.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iscte/tests/kjson/JsonReflectionTests.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iscte/tests/kjson/JsonTypesTests.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iscte/tests/web/GetJsonTests.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../media/model.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/../media/model.jpg" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,29 +65,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Build KJSON.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.GetJsonTests.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.JsonArrayTests.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.KJSON [buildDependents].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.KJSON [build].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.KJSON [classes].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.KJSON [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.KJSON [dependencies].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.KJSON [dokkaGenerateModuleHtml].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.KJSON [dokkaGenerate].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.KJSON [javadoc].executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.Whole project.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/alexm/Desktop/Worksplace/KJSON Project/KJSON/src/main/kotlin/Main.kt&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Build KJSON.executor": "Run",
+    "Gradle.GetJsonTests.executor": "Run",
+    "Gradle.JsonArrayTests.executor": "Run",
+    "Gradle.KJSON [buildDependents].executor": "Run",
+    "Gradle.KJSON [build].executor": "Run",
+    "Gradle.KJSON [classes].executor": "Run",
+    "Gradle.KJSON [clean].executor": "Run",
+    "Gradle.KJSON [dependencies].executor": "Run",
+    "Gradle.KJSON [dokkaGenerateModuleHtml].executor": "Run",
+    "Gradle.KJSON [dokkaGenerate].executor": "Run",
+    "Gradle.KJSON [javadocJar].executor": "Run",
+    "Gradle.KJSON [javadoc].executor": "Run",
+    "Gradle.kjson [clean].executor": "Run",
+    "Gradle.kjson [dokkaGenerateModuleHtml].executor": "Run",
+    "Gradle.kjson [dokkaGenerate].executor": "Run",
+    "Gradle.kjson [dokkaHtmlJar].executor": "Run",
+    "Gradle.kjson [jar].executor": "Run",
+    "Gradle.kjson [javadoc].executor": "Run",
+    "Gradle.kjson [sourcesJar].executor": "Run",
+    "JUnit.Whole project.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/alexm/Desktop/Worksplace/KJSON Project/KJSON",
+    "onboarding.tips.debug.path": "C:/Users/alexm/Desktop/Worksplace/KJSON Project/KJSON/src/main/kotlin/Main.kt",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
-}</component>
-  <component name="RunManager" selected="Gradle.KJSON [dokkaGenerate]">
+}]]></component>
+  <component name="RunManager" selected="Gradle.kjson [dokkaGenerate]">
     <configuration name="KJSON [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -164,51 +142,7 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="KJSON [dependencies]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="dependencies" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="KJSON [dokkaGenerateModuleHtml]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="dokkaGenerateModuleHtml" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="KJSON [dokkaGenerate]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="kjson [dokkaGenerate]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -220,6 +154,50 @@
         <option name="taskNames">
           <list>
             <option value="dokkaGenerate" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="kjson [dokkaHtmlJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="dokkaHtmlJar" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="kjson [sourcesJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="sourcesJar" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -334,11 +312,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.KJSON [dokkaGenerate]" />
+        <item itemvalue="Gradle.kjson [dokkaGenerate]" />
+        <item itemvalue="Gradle.kjson [sourcesJar]" />
+        <item itemvalue="Gradle.kjson [dokkaHtmlJar]" />
         <item itemvalue="Gradle.KJSON [build]" />
         <item itemvalue="Gradle.KJSON [clean]" />
-        <item itemvalue="Gradle.KJSON [dokkaGenerateModuleHtml]" />
-        <item itemvalue="Gradle.KJSON [dependencies]" />
       </list>
     </recent_temporary>
   </component>

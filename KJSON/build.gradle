@@ -1,6 +1,7 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '2.1.10'
     id 'org.jetbrains.dokka' version '2.0.0'
+    id 'maven-publish'
 }
 
 group = 'pt.iscte'
@@ -54,9 +55,58 @@ dokka {
         }
     }
     pluginsConfiguration.html {
-//        customStyleSheets.from("styles.css")
-//        customAssets.from("logo.png")
-//        footerMessage.set("(c) Your Company")
+        footerMessage.set("© Alexandre Cortez & Pedro Moura")
     }
 }
 
+// Define the tasks directly without registering them first
+task dokkaHtmlJar(type: Jar) {
+    group = JavaBasePlugin.DOCUMENTATION_GROUP
+    description = 'Assembles a jar archive containing the HTML documentation.'
+    archiveClassifier.set('javadoc')
+}
+
+task sourcesJar(type: Jar) {
+    group = JavaBasePlugin.DOCUMENTATION_GROUP
+    description = 'Assembles a jar archive containing the source code.'
+    archiveClassifier.set('sources')
+    from sourceSets.main.allSource
+}
+
+// Configure the publishing in afterEvaluate to ensure tasks are fully configured
+afterEvaluate {
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+
+                // Add the artifacts explicitly
+                artifact sourcesJar
+                artifact dokkaHtmlJar
+
+                pom {
+                    name = 'KJSON'
+                    description = 'A Kotlin JSON library'
+
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id = 'AlexandreMilharado'
+                            name = 'Alexandre Cortez'
+                        }
+                        developer {
+                            id = 'pafmoura'
+                            name = 'Pedro Moura'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
